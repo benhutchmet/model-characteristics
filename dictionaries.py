@@ -15,9 +15,13 @@ variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
 # example for dcppA-hindcast data: /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d20190914
 base_JASMIN_dir_cmip = "/badc/cmip6/data/CMIP6/CMIP"
 
+base_JASMIN_dir_dcpp = "/badc/cmip6/data/CMIP6/DCPP"
+
 columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list' ]
 
-experiment = "historical"
+experiment_hist = "historical"
+
+experiment_dccp = "dcppA-hindcast"
 
 table_id = "Amon"
 

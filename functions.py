@@ -70,7 +70,7 @@ def check_experiment(model, base_path, experiment="historical"):
 # and experiment
 def get_runs(model, base_path, experiment):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
     # find the directory which matches the path
     dirs = glob.glob(path)
