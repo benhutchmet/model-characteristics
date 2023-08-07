@@ -292,7 +292,7 @@ def get_variable(model, base_path, experiment="historical", table_id="Amon", var
 import pandas as pd
 import glob
 
-def fill_dataframe(models, base_path, columns, experiment="historical", table_id="Amon"):
+def fill_dataframe(models, base_path, variables, columns, experiment="historical", table_id="Amon"):
     # create an empty dataframe with the desired columns
     df = pd.DataFrame(columns=columns)
 
@@ -301,23 +301,24 @@ def fill_dataframe(models, base_path, columns, experiment="historical", table_id
         "institution": get_institution,
         "source": lambda model, base_path: model,
         "experiment": lambda model, base_path: experiment,
-        "runs": lambda model, base_path: get_runs(model, base_path, experiment=experiment, table_id=table_id),
-        "inits": lambda model, base_path: get_inits(model, base_path, experiment=experiment, table_id=table_id),
-        "physics": lambda model, base_path: get_physics(model, base_path, experiment=experiment, table_id=table_id),
-        "forcing": lambda model, base_path: get_forcing(model, base_path, experiment=experiment),
-        "total ensemble members": lambda model, base_path: get_total_ensemble_members(model, base_path, experiment=experiment)
+        "runs": lambda model, base_path, variable: get_runs(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "inits": lambda model, base_path, variable: get_inits(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "physics": lambda model, base_path, variable: get_physics(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "forcing": lambda model, base_path, variable: get_forcing(model, base_path, experiment=experiment, variable=variable),
+        "total ensemble members": lambda model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment, variable=variable)
     }
 
-    # iterate over the models and columns
+    # iterate over the models, variables, and columns
     for model in models:
-        for column in columns:
-            # get the function corresponding to the column name
-            column_function = column_functions[column]
+        for variable in variables:
+            for column in columns:
+                # get the function corresponding to the column name
+                column_function = column_functions[column]
 
-            # call the function to get the value for the current model and column
-            value = column_function(model, base_path)
+                # call the function to get the value for the current model, variable, and column
+                value = column_function(model, base_path, variable)
 
-            # add a row to the dataframe with the model and column value
-            df = df.append({"Model": model, column: value}, ignore_index=True)
+                # add a row to the dataframe with the model, variable, and column value
+                df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=True)
 
     return df
