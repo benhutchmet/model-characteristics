@@ -77,13 +77,13 @@ def check_experiment(model, base_path, experiment="historical"):
 # and experiment
 def get_runs(model, base_path, experiment="historical"):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*ip*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
     # find the directory which matches the path
     dirs = glob.glob(path)
 
     # print the directory which matches the path
-    print("Directory: ", dirs[0])
+    print("Directory: ", dirs)
 
     # get the number of runs
     runs = len(set([x.split('r')[1].split('i')[0] for x in dirs]))
