@@ -97,7 +97,7 @@ def get_runs(model, base_path, experiment):
 # Define a similar function to get the number of initialisations
 def get_inits(model, base_path, experiment):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
     # find the directories which match the path
     dirs = glob.glob(path)
@@ -123,7 +123,7 @@ def get_inits(model, base_path, experiment):
 # Define a function to get the number of physics ensembles
 def get_physics(model, base_path, experiment):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
     # find the directories which match the path
     dirs = glob.glob(path)
@@ -149,7 +149,7 @@ def get_physics(model, base_path, experiment):
 # For the forcing
 def get_forcing(model, base_path, experiment):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
     # find the directories which match the path
     dirs = glob.glob(path)
@@ -176,7 +176,7 @@ def get_forcing(model, base_path, experiment):
 # this is the total number of directories which match the path
 def get_total_ensemble_members(model, base_path, experiment):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
     # find the directories which match the path
     dirs = glob.glob(path)
