@@ -23,6 +23,8 @@ experiment_hist = "historical"
 
 experiment_dccp = "dcppA-hindcast"
 
+experiments = [ "historical", "dcppA-hindcast" ]
+
 table_id = "Amon"
 
 test_variable = "psl"
