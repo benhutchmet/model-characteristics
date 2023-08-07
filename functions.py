@@ -52,11 +52,11 @@ def get_institution(model, base_path):
 # for a given model
 # function takes the model name and the base path
 # and returns the experiment name
-def check_experiment(model, base_path):
+def check_experiment(model, base_path, experiment="historical"):
     # use a try/except block to check whether the experiment exists
     try:
         # form the path
-        path = base_path + "/*/" + model + "/historical"
+        path = base_path + "/*/" + model + "/" + experiment
 
         # find the directory which matches the path
         dirs = glob.glob(path)
