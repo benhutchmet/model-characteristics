@@ -206,7 +206,7 @@ def get_total_ensemble_members(model, base_path, experiment):
 def get_table_id(model, base_path, experiment, table_id):
     # Form the path
     # # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id
 
     # find the directories which match the path
     dirs = glob.glob(path)
@@ -241,7 +241,7 @@ def get_table_id(model, base_path, experiment, table_id):
 def get_variable(model, base_path, experiment, table_id, variable):
     # Form the path
     # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable
 
     # path for the runs directory
     path_runs_dir = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
@@ -298,7 +298,7 @@ def get_variable(model, base_path, experiment, table_id, variable):
 # in the final directory
 def get_files(model, base_path, experiment, table_id, variable):
     # Form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
     print("Path: ", path)
 
     # find the directories which match the path
