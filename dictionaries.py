@@ -12,12 +12,10 @@ variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
 # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
 base_JASMIN_dir = "/badc/cmip6/data/CMIP6/CMIP"
 
-columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list' ] 
+columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model']
 
 experiment = "historical"
 
 table_id = "Amon"
 
 test_variable = "psl"
-
-test_model = [ "BCC-CSM2-MR" ]
