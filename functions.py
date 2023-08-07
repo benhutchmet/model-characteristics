@@ -289,7 +289,8 @@ def get_years(model, base_path, experiment, table_id, variable):
         # Check that the list of files is not empty
         if len(files_list) == 0:
             print("No files available")
-            return None
+            years_range = "No files"
+            return years_range
         # extract the years from the filenames
         # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
         min_year = re.findall(r'\d{4}', files_list[0])[0]
@@ -379,7 +380,8 @@ def get_files(model, base_path, experiment, table_id, variable):
     # Check that the list of directories is not empty
     if len(dirs) == 0:
         print("No files available")
-        return None
+        files_list = []
+        return files_list
     
     # # print the directories which match the path
     # print("Directories: ", dirs)
