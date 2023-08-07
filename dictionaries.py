@@ -19,3 +19,5 @@ experiment = "historical"
 table_id = "Amon"
 
 test_variable = "psl"
+
+test_model = [ "BCC-CSM2-MR" ]

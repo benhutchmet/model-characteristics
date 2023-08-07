@@ -330,7 +330,7 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
 
             # print the variable name
             print("Variable: ", variable)
-            
+
             for column in columns:
                 # get the function corresponding to the column name
                 column_function = column_functions[column]
@@ -338,7 +338,7 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
                 # call the function to get the value for the current model, variable, and column
                 value = column_function(model, base_path, variable)
 
-                # add a row to the dataframe with the model, variable, and column value
-                # df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=False)
+                # add the column value
+                df = df.append({column: value}, ignore_index=False)
 
     return df
