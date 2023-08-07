@@ -4,6 +4,7 @@
 import os
 import sys
 import glob
+import re
 
 # Third-party imports
 import numpy as np
@@ -238,6 +239,61 @@ def get_table_id(model, base_path, experiment, table_id):
     #print("Table_id: ", first_table_id)
 
     return first_table_id
+
+# define a function to extract the years
+# using different methods for different experiments
+def get_years(model, base_path, experiment, table_id, variable):
+    # Form the path
+    if experiment == 'dccpA-hindcast':
+        
+        # set up the path
+        path = base_path + "/*/" + model + "/" + experiment + "/s????-r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            return None
+        
+        # extract the min and max years from the path
+        # if the paths are /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1960-r1i1p1f1/Amon/rsds/gn/files/d* and /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d*
+        # then the min and max years are 1960 and 1970
+        # first extract the s????-r*i*p*f* directory from the path
+        # which is the fifth from last element
+        # e.g. s1960-r1i1p1f1
+        years_init_dirs = [dirs.split("/")[-5] for dirs in dirs]
+        print("years_init_dirs: ", years_init_dirs)
+
+        # extract the min and max years from the years_init_dirs
+        # as the substring between the characters 's' and 'r'
+        years = [years_init_dirs.split("s")[1].split("r")[0] for years_init_dirs in years_init_dirs]
+        print("years: ", years)
+
+        # find the min and max years
+        min_year = min(years)
+        max_year = max(years)
+
+        # form the range of years
+        # e.g 1960-1970
+        years_range = min_year + "-" + max_year
+
+    elif experiment == 'historical':
+        # get the list of files in the final directory
+        files_list = get_files(model, base_path, experiment, table_id, variable)
+        # Check that the list of files is not empty
+        if len(files_list) == 0:
+            print("No files available")
+            return None
+        # extract the years from the filenames
+        years = [re.search(r'\d{4}', f).group(0) for f in files_list]
+    else:
+        print("Experiment not recognized")
+        return None
+    # return the list of years
+    return years_range    
+
 
 # Define a function to get the variable name
 # such as psl, tas, tos, rsds, sfcWind, etc.
