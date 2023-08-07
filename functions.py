@@ -21,7 +21,7 @@ import cartopy.crs as ccrs
 # for a given model
 # function takes the model name and the base path
 # and returns the institution name
-def get_institution(model, base_path):
+def get_institution(model, base_path, variable):
     # institution name is the 6th element in the path
     # which is formed as:
     # base_path + / + institution + / + model
@@ -68,7 +68,7 @@ def check_experiment(model, base_path, experiment="historical"):
 
 # Define a function to get the number of runs for a given model
 # and experiment
-def get_runs(model, base_path, experiment="historical"):
+def get_runs(model, base_path, experiment):
     # form the path
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
@@ -95,7 +95,7 @@ def get_runs(model, base_path, experiment="historical"):
     return runs
 
 # Define a similar function to get the number of initialisations
-def get_inits(model, base_path, experiment="historical"):
+def get_inits(model, base_path, experiment):
     # form the path
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
@@ -121,7 +121,7 @@ def get_inits(model, base_path, experiment="historical"):
     return inits
 
 # Define a function to get the number of physics ensembles
-def get_physics(model, base_path, experiment="historical"):
+def get_physics(model, base_path, experiment):
     # form the path
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
@@ -147,7 +147,7 @@ def get_physics(model, base_path, experiment="historical"):
     return physics
 
 # For the forcing
-def get_forcing(model, base_path, experiment="historical"):
+def get_forcing(model, base_path, experiment):
     # form the path
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
@@ -174,7 +174,7 @@ def get_forcing(model, base_path, experiment="historical"):
 
 # Define a function to get the total number of ensemble members
 # this is the total number of directories which match the path
-def get_total_ensemble_members(model, base_path, experiment="historical"):
+def get_total_ensemble_members(model, base_path, experiment):
     # form the path
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
@@ -203,7 +203,7 @@ def get_total_ensemble_members(model, base_path, experiment="historical"):
 # check that the table_id is the same for all ensemble members
 # function takes the model name and the base path and table_id = "Amon"
 # and returns the table_id
-def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
+def get_table_id(model, base_path, experiment, table_id):
     # Form the path
     # # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id
@@ -238,7 +238,7 @@ def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
 # check that the variable is the same for all ensemble members
 # function takes the model name and the base path and the experiment name and table_id and variable name
 # and returns the variable name
-def get_variable(model, base_path, experiment="historical", table_id="Amon", variable="psl"):
+def get_variable(model, base_path, experiment, table_id, variable):
     # Form the path
     # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable
@@ -289,16 +289,13 @@ def get_variable(model, base_path, experiment="historical", table_id="Amon", var
 # function takes the list of models and the base path 
 # and the experiment name and table_id and the list of variables
 # and returns the dataframe
-import pandas as pd
-import glob
-
-def fill_dataframe(models, base_path, variables, columns, experiment="historical", table_id="Amon"):
+def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
     # create an empty dataframe with the desired columns
     df = pd.DataFrame(columns=columns)
 
     # create a dictionary to map column names to functions
     column_functions = {
-        "institution": lambda model, base_path: get_institution(model, base_path),
+        "institution": lambda model, base_path, variable: get_institution(model, base_path),
         "source": lambda model, base_path, variable: model,
         "experiment": lambda model, base_path, variable: experiment,
         "runs": lambda model, base_path, variable: get_runs(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
