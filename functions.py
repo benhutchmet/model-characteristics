@@ -48,4 +48,26 @@ def get_institution(model, base_path):
 
     return institution
 
-#
+# function to check whether experiment 'historical' exists
+# for a given model
+# function takes the model name and the base path
+# and returns the experiment name
+def check_experiment(model, base_path):
+    # use a try/except block to check whether the experiment exists
+    try:
+        # form the path
+        path = base_path + "/*/" + model + "/historical"
+
+        # find the directory which matches the path
+        dirs = glob.glob(path)
+
+        # split the path to get the experiment name
+        experiment = dirs[0].split("/")[8]
+
+        # print the experiment name
+        print("Experiment: ", experiment)
+
+        return experiment
+    except:
+        print("Experiment not found")
+        return None
