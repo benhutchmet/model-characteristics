@@ -287,7 +287,13 @@ def get_years(model, base_path, experiment, table_id, variable):
             print("No files available")
             return None
         # extract the years from the filenames
-        years = [re.search(r'\d{4}', f).group(0) for f in files_list]
+        # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+        min_year = re.findall(r'\d{4}', files_list[0])[0]
+        max_year = re.findall(r'\d{4}', files_list[-1])[0]
+
+        # form the range of years
+        # e.g 1850-2014
+        years_range = min_year + "-" + max_year
     else:
         print("Experiment not recognized")
         return None
