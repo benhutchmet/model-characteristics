@@ -320,17 +320,13 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
         "model": lambda model, base_path, variable: model
     }
 
-    # iterate over the models, variables, and columns
+    # iterate over the models and variables
     for model in models:
-
-        # print the model name
-        print("Model: ", model)
-
         for variable in variables:
+            # create a dictionary to hold the values for this combination of model and variable
+            row_dict = {}
 
-            # print the variable name
-            print("Variable: ", variable)
-
+            # iterate over the columns and add the values to the dictionary
             for column in columns:
                 # get the function corresponding to the column name
                 column_function = column_functions[column]
@@ -338,7 +334,10 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
                 # call the function to get the value for the current model, variable, and column
                 value = column_function(model, base_path, variable)
 
-                # add the column value
-                df = df.append({column: value}, ignore_index=True)
+                # add the column value to the dictionary
+                row_dict[column] = value
+
+            # append the row dictionary to the dataframe as a new row
+            df = df.append(row_dict, ignore_index=True)
 
     return df
