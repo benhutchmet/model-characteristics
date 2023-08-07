@@ -17,13 +17,6 @@ import cartopy.crs as ccrs
 # # data on JASMIN path
 # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
 
-# Set up dataframe with columns specified in dictionaries.py
-def setup_dataframe(columns):
-    # create an empty pandas dataframe with the specified columns
-    df = pd.DataFrame(columns=columns)
-    
-    return df
-
 # Function to get the institution name from the path
 # for a given model
 # function takes the model name and the base path
@@ -289,3 +282,42 @@ def get_variable(model, base_path, experiment="historical", table_id="Amon", var
     print("Variable: ", first_variable)
 
     return first_variable, no_members, members_list
+
+# Define a function to fill in the dataframe
+# function calls the functions above
+# to set up the dataframe and fill in the columns
+# function takes the list of models and the base path 
+# and the experiment name and table_id and the list of variables
+# and returns the dataframe
+import pandas as pd
+import glob
+
+def fill_dataframe(models, base_path, columns, experiment="historical", table_id="Amon"):
+    # create an empty dataframe with the desired columns
+    df = pd.DataFrame(columns=columns)
+
+    # create a dictionary to map column names to functions
+    column_functions = {
+        "institution": get_institution,
+        "source": lambda model, base_path: model,
+        "experiment": lambda model, base_path: experiment,
+        "runs": lambda model, base_path: get_runs(model, base_path, experiment=experiment, table_id=table_id),
+        "inits": lambda model, base_path: get_inits(model, base_path, experiment=experiment, table_id=table_id),
+        "physics": lambda model, base_path: get_physics(model, base_path, experiment=experiment, table_id=table_id),
+        "forcing": lambda model, base_path: get_forcing(model, base_path, experiment=experiment),
+        "total ensemble members": lambda model, base_path: get_total_ensemble_members(model, base_path, experiment=experiment)
+    }
+
+    # iterate over the models and columns
+    for model in models:
+        for column in columns:
+            # get the function corresponding to the column name
+            column_function = column_functions[column]
+
+            # call the function to get the value for the current model and column
+            value = column_function(model, base_path)
+
+            # add a row to the dataframe with the model and column value
+            df = df.append({"Model": model, column: value}, ignore_index=True)
+
+    return df

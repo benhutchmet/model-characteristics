@@ -1,4 +1,4 @@
-# Dictionaries used in the functions.py file and the model_charac.ipynb notebook
+    # Dictionaries used in the functions.py file and the model_charac.ipynb notebook
 
 canari_dir = "/gws/nopw/j04/canari/users/benhutch/"
 
