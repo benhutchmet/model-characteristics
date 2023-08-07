@@ -23,3 +23,9 @@ test_variable = "psl"
 test_model = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR" ]
 
 test_model_can = [ "CanESM5" ]
+
+test_model_cmcc = [ "CMCC-CM2-SR5" ]
+
+test_model_hadgem = [ "HadGEM3-GC31-MM" ]
+
+test_models_nocan = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR", "CMCC-CM2-SR5", "HadGEM3-GC31-MM", "EC-Earth3", "MPI-ESM1-2-LR", "FGOALS-f3-L", "MIROC6", "IPSL-CM6A-LR", "NorCPM1" ]

@@ -322,7 +322,14 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
 
     # iterate over the models and variables
     for model in models:
+
+        # Print the model which is being processed
+        print("Model: ", model)
+
         for variable in variables:
+
+            # Print the variable which is being processed
+            print("Variable: ", variable)
             # create a dictionary to hold the values for this combination of model and variable
             row_dict = {}
 
