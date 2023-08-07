@@ -100,3 +100,81 @@ def get_runs(model, base_path, experiment="historical"):
     print("Number of runs: ", runs)
 
     return runs
+
+# Define a similar function to get the number of initialisations
+def get_inits(model, base_path, experiment="historical"):
+    # form the path
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # get the final element of each directory path
+    final_dirs = [d.split("/")[-1] for d in dirs]
+
+    # print the final directories
+    print("Final directories: ", final_dirs)
+
+    # extract the number of unique initializations
+    # as the substring between the characters 'i' and 'p'
+    inits = len(set([fd.split("i")[1].split("p")[0] for fd in final_dirs]))
+
+    # print the number of initializations
+    print("Number of initializations: ", inits)
+
+    return inits
+
+# Define a function to get the number of physics ensembles
+def get_physics(model, base_path, experiment="historical"):
+    # form the path
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # get the final element of each directory path
+    final_dirs = [d.split("/")[-1] for d in dirs]
+
+    # print the final directories
+    print("Final directories: ", final_dirs)
+
+    # extract the number of unique physics forcings
+    # as the substring between the characters 'p' and 'f'
+    physics = len(set([fd.split("p")[1].split("f")[0] for fd in final_dirs]))
+
+    # print the number of physics forcings
+    print("Number of physics forcings: ", physics)
+
+    return physics
+
+# For the forcing
+def get_forcing(model, base_path, experiment="historical"):
+    # form the path
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # get the final element of each directory path
+    final_dirs = [d.split("/")[-1] for d in dirs]
+
+    # print the final directories
+    print("Final directories: ", final_dirs)
+
+    # extract the number of unique forcing scenarios
+    # as the substring after the character 'f'
+    forcing = len(set([fd.split("f")[-1] for fd in final_dirs]))
+
+    # print the number of forcing scenarios
+    print("Number of forcing scenarios: ", forcing)
+
+    return forcing
