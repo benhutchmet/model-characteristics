@@ -298,10 +298,10 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
         "institution": lambda model, base_path, variable: get_institution(model, base_path, variable),
         "source": lambda model, base_path, variable: model,
         "experiment": lambda model, base_path, variable: experiment,
-        "runs": lambda model, base_path, variable: get_runs(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "inits": lambda model, base_path, variable: get_inits(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "physics": lambda model, base_path, variable: get_physics(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "forcing": lambda model, base_path, variable: get_forcing(model, base_path, experiment=experiment, variable=variable),
+        "runs": lambda model, base_path, variable: get_runs(model, base_path, experiment=experiment),
+        "inits": lambda model, base_path, variable: get_inits(model, base_path, experiment=experiment),
+        "physics": lambda model, base_path, variable: get_physics(model, base_path, experiment=experiment),
+        "forcing": lambda model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
         "total ensemble members": lambda model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment, variable=variable)
     }
 
