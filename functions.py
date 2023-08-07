@@ -250,11 +250,28 @@ def get_variable(model, base_path, experiment="historical", table_id="Amon", var
     # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
     path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable
 
+    # path for the runs directory
+    path_runs_dir = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+
     # find the directories which match the path
     dirs = glob.glob(path)
 
+    # find the directories which match the path for the runs directory
+    dirs_runs_dir = glob.glob(path_runs_dir)
+
     # print the directories which match the path
     print("Directories: ", dirs)
+
+    # set the number of members available
+    # i.e. the number of directories which match the path
+    no_members = len(dirs)
+    print("Number of members: ", no_members)
+
+    # extract the r*i*p*f* directory from the path
+    # which is the third from last element
+    # e.g. r1i1p1f1
+    members_list = [dirs.split("/")[-3] for dirs in dirs]
+    print("Members list: ", members_list)
 
     # Get the variable name from the first directory
     first_variable = dirs[0].split("/")[-1]
@@ -262,14 +279,13 @@ def get_variable(model, base_path, experiment="historical", table_id="Amon", var
     # print the first variable
     print("First variable: ", first_variable)
 
-    # Check that the variable is the same for all ensemble members
-    for d in dirs:
-        if d.split("/")[-1] != first_variable:
-            print("Variable is not the same for all ensemble members")
-            raise ValueError("Variable is not the same for all ensemble members")
-            return None
-        
+    # Check whether the lens of the dirs for the runs directory is the same as the lens of the dirs for the variable
+    if len(dirs_runs_dir) != len(dirs):
+        print("Not all runs are available for the variable")
+        print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
+        print("Number of runs available for the variable: ", len(dirs))
+
     # print the variable
     print("Variable: ", first_variable)
 
-    return first_variable
+    return first_variable, no_members, members_list
