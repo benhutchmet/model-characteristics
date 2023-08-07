@@ -211,3 +211,30 @@ def get_total_ensemble_members(model, base_path, experiment="historical"):
 # function takes the model name and the base path and table_id = "Amon"
 # and returns the table_id
 def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
+    # Form the path
+    # # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the first directory which matches the path
+    print("First directory: ", dirs[0])
+
+    # Get the table_id from the path
+    first_table_id = dirs[0].split("/")[-1]
+
+    # print the first table_id
+    print("First table_id: ", first_table_id)
+
+    # Check that the table_id is the same for all ensemble members
+    for d in dirs:
+        if d.split("/")[-1] != first_table_id:
+            print("Table_id is not the same for all ensemble members")
+            raise ValueError("Table_id is not the same for all ensemble members")
+            return None
+        
+    # print the table_id
+    print("Table_id: ", first_table_id)
+
+    return first_table_id
