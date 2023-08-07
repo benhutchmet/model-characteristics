@@ -313,10 +313,17 @@ def get_files(model, base_path, experiment, table_id, variable):
     print("Directories: ", dirs)
 
     # get a list of the files in the final directory
-    files_list = glob.glob(dirs[0] + "*")
+    files_list = glob.glob(dirs + "*")
 
     # print the files in the final directory
     print("Files list: ", files_list)
+
+    # extract the final element following the last "/"
+    # from each file in the files_list
+    files_list = [f.split("/")[-1] for f in files_list]
+
+    # print the files in the final directory
+    print("Files list final dir: ", files_list)
 
     return files_list
 
