@@ -6,3 +6,8 @@ models = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR", "CanESM5", "CMCC-CM2-SR5", "HadGEM3-G
 
 variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
 
+# data on JASMIN path
+# /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+base_JASMIN_dir = "/badc/cmip6/data/CMIP6/CMIP"
+
+columns = ['institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members']

@@ -12,20 +12,38 @@ import xarray as xr
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
-def setup_dataframe(variable):
-    # create a dictionary with the column names as keys and empty lists as values
-    data = {'experiment': [], 'time period': [], 'runs': [], 'initialization': []}
-    
-    # add data to the dictionary
-    data['experiment'] = ['experiment1', 'experiment2', 'experiment3']
-    data['time period'] = ['period1', 'period2', 'period3']
-    data['runs'] = [1, 2, 3]
-    data['initialization'] = ['init1', 'init2', 'init3']
-    
-    # create a pandas dataframe from the dictionary
-    df = pd.DataFrame(data)
-    
-    # add the variable column to the dataframe
-    df['variable'] = variable
+# JASMIN dir
+# for historical data
+# # data on JASMIN path
+# /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+
+# Set up dataframe with columns specified in dictionaries.py
+def setup_dataframe(columns):
+    # create an empty pandas dataframe with the specified columns
+    df = pd.DataFrame(columns=columns)
     
     return df
+
+# Function to get the institution name from the path
+# for a given model
+# function takes the model name and the base path
+# and returns the institution name
+def get_institution(model, base_path):
+    # institution name is the 6th element in the path
+    # which is formed as:
+    # base_path + / + institution + / + model
+    # e.g. /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1
+
+    # form the path
+    path = base_path + "/*/" + model
+
+    # find the directory which matches the path
+    dirs = glob.glob(path)
+
+    # split the path to get the institution name
+    institution = dirs[0].split("/")[6]
+
+    # print the institution name
+    print("Institution: ", institution)
+
+    return institution
