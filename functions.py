@@ -86,8 +86,8 @@ def get_runs(model, base_path, experiment="historical"):
     print("Directory: ", dirs)
 
     # get the number of runs
-    runs = len(set([x.split('r')[1].split('i')[0] for x in dirs]))
-
+    runs = len(set([x.split('r')[1][0] for x in dirs]))
+    
     # print the number of runs
     print("Number of runs: ", runs)
 
