@@ -249,6 +249,12 @@ def get_variable(model, base_path, experiment, table_id, variable):
     # find the directories which match the path
     dirs = glob.glob(path)
 
+    # if the dirs list is empty
+    # then the variable is not available
+    if len(dirs) == 0:
+        print("Variable not available")
+        return None
+
     # find the directories which match the path for the runs directory
     dirs_runs_dir = glob.glob(path_runs_dir)
 
