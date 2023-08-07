@@ -20,4 +20,6 @@ table_id = "Amon"
 
 test_variable = "psl"
 
-test_model = [ "BCC-CSM2-MR" ]
+test_model = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR" ]
+
+test_model_can = [ "CanESM5" ]
