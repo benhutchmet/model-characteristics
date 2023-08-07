@@ -294,12 +294,33 @@ def get_variable(model, base_path, experiment, table_id, variable):
 
     return first_variable, no_members, members_list
 
+# Define a function to get the list of files for a given model, experiment, table_id, variable
+# in the final directory
+def get_files(model, base_path, experiment, table_id, variable):
+    # Form the path
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+    print("Path: ", path)
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # Check that the list of directories is not empty
+    if len(dirs) == 0:
+        print("No files available")
+        return None
+    
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # get a list of the files in the final directory
+    files_list = glob.glob(dirs[0] + "*")
+
+    # print the files in the final directory
+    print("Files list: ", files_list)
+
+    return files_list
+
 # Define a function to fill in the dataframe
-# function calls the functions above
-# to set up the dataframe and fill in the columns
-# function takes the list of models and the base path 
-# and the experiment name and table_id and the list of variables
-# and returns the dataframe
 def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
     # create an empty dataframe with the desired columns
     df = pd.DataFrame(columns=columns)
