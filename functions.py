@@ -85,6 +85,14 @@ def get_runs(model, base_path, experiment="historical"):
     # print the directory which matches the path
     print("Directory: ", dirs)
 
+    # break this down for debugging
+    split = x.split('r') for x in dirs
+    print("Split: ", split)
+    split_first = [x[1] for x in split]
+    print("Split first: ", split_first)
+    split_second = [x[0] for x in split_first]
+    print("Split second: ", split_second)
+
     # get the number of runs
     runs = len(set([x.split('r')[1][0] for x in dirs]))
     
