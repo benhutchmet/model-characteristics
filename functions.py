@@ -219,7 +219,7 @@ def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
     dirs = glob.glob(path)
 
     # print the first directory which matches the path
-    print("First directory: ", dirs[0])
+    print("First directory: ", dirs)
 
     # Get the table_id from the path
     first_table_id = dirs[0].split("/")[-1]
