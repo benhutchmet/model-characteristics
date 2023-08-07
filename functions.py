@@ -285,9 +285,9 @@ def get_variable(model, base_path, experiment, table_id, variable):
 
     # Check whether the lens of the dirs for the runs directory is the same as the lens of the dirs for the variable
     if len(dirs_runs_dir) != len(dirs):
-        #print("Not all runs are available for the variable")
-        #print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
-        #print("Number of runs available for the variable: ", len(dirs))
+        print("Not all runs are available for the variable")
+        print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
+        print("Number of runs available for the variable: ", len(dirs))
 
     # #print the variable
     #print("Variable: ", first_variable)
