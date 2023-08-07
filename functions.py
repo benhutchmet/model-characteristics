@@ -244,7 +244,7 @@ def get_table_id(model, base_path, experiment, table_id):
 # using different methods for different experiments
 def get_years(model, base_path, experiment, table_id, variable):
     # Form the path
-    if experiment == 'dccpA-hindcast':
+    if experiment == 'dcppA-hindcast':
         
         # set up the path
         path = base_path + "/*/" + model + "/" + experiment + "/s????-r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
@@ -263,7 +263,7 @@ def get_years(model, base_path, experiment, table_id, variable):
         # first extract the s????-r*i*p*f* directory from the path
         # which is the fifth from last element
         # e.g. s1960-r1i1p1f1
-        years_init_dirs = [dirs.split("/")[-5] for dirs in dirs]
+        years_init_dirs = [dirs.split("/")[-7] for dirs in dirs]
         print("years_init_dirs: ", years_init_dirs)
 
         # extract the min and max years from the years_init_dirs
@@ -289,7 +289,7 @@ def get_years(model, base_path, experiment, table_id, variable):
         # extract the years from the filenames
         # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
         min_year = re.findall(r'\d{4}', files_list[0])[0]
-        max_year = re.findall(r'\d{4}', files_list[-1])[0]
+        max_year = re.findall(r'\d{4}', files_list[0])[1]
 
         # form the range of years
         # e.g 1850-2014
