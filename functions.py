@@ -94,7 +94,7 @@ def get_runs(model, base_path, experiment="historical"):
 
     # extract the number of runs
     # as the substring between the characters 'r' and 'i'
-    runs = len([final_dirs.split("r")[1].split("i")[0] for final_dirs in final_dirs])
+    runs = len(set([final_dirs.split("r")[1].split("i")[0] for final_dirs in final_dirs]))
 
     # print the number of runs
     print("Number of runs: ", runs)
