@@ -421,7 +421,7 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
         "variable": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
         "model": lambda model, base_path, variable: model,
         "files_list": lambda model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "years": lambda model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
+        "years_range": lambda model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
     }
 
     # iterate over the models and variables

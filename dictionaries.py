@@ -17,7 +17,7 @@ base_JASMIN_dir_cmip = "/badc/cmip6/data/CMIP6/CMIP"
 
 base_JASMIN_dir_dcpp = "/badc/cmip6/data/CMIP6/DCPP"
 
-columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list' ]
+columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list', 'years_range' ]
 
 experiment_hist = "historical"
 
