@@ -33,6 +33,12 @@ def get_institution(model, base_path, variable):
     # find the directory which matches the path
     dirs = glob.glob(path)
 
+    # if the dirs list is empty
+    # then the variable is not available
+    if len(dirs) == 0:
+        print("Model not available")
+        return None
+
     # split the path to get the institution name
     institution = dirs[0].split("/")[6]
 
