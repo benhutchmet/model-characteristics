@@ -322,7 +322,15 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
 
     # iterate over the models, variables, and columns
     for model in models:
+
+        # print the model name
+        print("Model: ", model)
+
         for variable in variables:
+
+            # print the variable name
+            print("Variable: ", variable)
+            
             for column in columns:
                 # get the function corresponding to the column name
                 column_function = column_functions[column]
