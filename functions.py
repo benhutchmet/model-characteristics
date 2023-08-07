@@ -71,3 +71,24 @@ def check_experiment(model, base_path, experiment="historical"):
     except:
         print("Experiment not found")
         return None
+    
+
+# Define a function to get the number of runs for a given model
+# and experiment
+def get_runs(model, base_path, experiment="historical"):
+    # form the path
+    path = base_path + "/*/" + model + "/" + experiment
+
+    # find the directory which matches the path
+    dirs = glob.glob(path)
+
+    # print the directory which matches the path
+    print("Directory: ", dirs[0])
+
+    # get the number of runs
+    runs = len(set([x.split('r')[1] for x in dirs]))
+
+    # print the number of runs
+    print("Number of runs: ", runs)
+
+    return runs
