@@ -339,6 +339,6 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
                 value = column_function(model, base_path, variable)
 
                 # add the column value
-                df = df.append({column: value}, ignore_index=False)
+                df = df.append({column: value}, ignore_index=True)
 
     return df
