@@ -12,7 +12,8 @@ variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
 
 # data on JASMIN path
 # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
-base_JASMIN_dir = "/badc/cmip6/data/CMIP6/CMIP"
+# example for dcppA-hindcast data: /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d20190914
+base_JASMIN_dir_cmip = "/badc/cmip6/data/CMIP6/CMIP"
 
 columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list' ]
 
