@@ -178,3 +178,29 @@ def get_forcing(model, base_path, experiment="historical"):
     print("Number of forcing scenarios: ", forcing)
 
     return forcing
+
+# Define a function to get the total number of ensemble members
+# this is the total number of directories which match the path
+def get_total_ensemble_members(model, base_path, experiment="historical"):
+    # form the path
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # get the final element of each directory path
+    final_dirs = [d.split("/")[-1] for d in dirs]
+
+    # print the final directories
+    print("Final directories: ", final_dirs)
+
+    # extract the number of ensemble members
+    ensemble_members = len(final_dirs)
+
+    # print the number of ensemble members
+    print("Number of ensemble members: ", ensemble_members)
+
+    return ensemble_members
