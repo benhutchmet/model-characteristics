@@ -315,7 +315,9 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
         "forcing": lambda model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
         "total ensemble members": lambda model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
         "no_members": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
-        "members_list": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2]
+        "members_list": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
+        "variable": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
+        "model": lambda model, base_path, variable: model
     }
 
     # iterate over the models, variables, and columns
@@ -329,6 +331,6 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
                 value = column_function(model, base_path, variable)
 
                 # add a row to the dataframe with the model, variable, and column value
-                df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=False)
+                # df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=False)
 
     return df
