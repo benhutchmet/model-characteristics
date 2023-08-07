@@ -329,6 +329,6 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
                 value = column_function(model, base_path, variable)
 
                 # add a row to the dataframe with the model, variable, and column value
-                df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=True)
+                df = df.append({"Model": model, "Variable": variable, column: value}, ignore_index=False)
 
     return df
