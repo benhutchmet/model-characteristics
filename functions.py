@@ -36,8 +36,8 @@ def get_institution(model, base_path, variable):
     # split the path to get the institution name
     institution = dirs[0].split("/")[6]
 
-    # print the institution name
-    print("Institution: ", institution)
+    # #print the institution name
+    #print("Institution: ", institution)
 
     return institution
 
@@ -57,12 +57,12 @@ def check_experiment(model, base_path, experiment="historical"):
         # split the path to get the experiment name
         experiment = dirs[0].split("/")[8]
 
-        # print the experiment name
-        print("Experiment: ", experiment)
+        # #print the experiment name
+        #print("Experiment: ", experiment)
 
         return experiment
     except:
-        print("Experiment not found")
+        #print("Experiment not found")
         return None
     
 
@@ -75,22 +75,22 @@ def get_runs(model, base_path, experiment):
     # find the directory which matches the path
     dirs = glob.glob(path)
 
-    # print the directory which matches the path
-    print("Directory: ", dirs)
+    # #print the directory which matches the path
+    #print("Directory: ", dirs)
 
     # get the final element of the path
     # which is the r*i*p*f* directory
     final_dirs = [dirs.split("/")[-1] for dirs in dirs]
 
-    # print the final directories
-    print("Final directories: ", final_dirs)
+    # #print the final directories
+    #print("Final directories: ", final_dirs)
 
     # extract the number of runs
     # as the substring between the characters 'r' and 'i'
     runs = len(set([final_dirs.split("r")[1].split("i")[0] for final_dirs in final_dirs]))
 
-    # print the number of runs
-    print("Number of runs: ", runs)
+    # #print the number of runs
+    #print("Number of runs: ", runs)
 
     return runs
 
@@ -102,21 +102,21 @@ def get_inits(model, base_path, experiment):
     # find the directories which match the path
     dirs = glob.glob(path)
 
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # #print the directories which match the path
+    #print("Directories: ", dirs)
 
     # get the final element of each directory path
     final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # print the final directories
-    print("Final directories: ", final_dirs)
+    # #print the final directories
+    #print("Final directories: ", final_dirs)
 
     # extract the number of unique initializations
     # as the substring between the characters 'i' and 'p'
     inits = len(set([fd.split("i")[1].split("p")[0] for fd in final_dirs]))
 
-    # print the number of initializations
-    print("Number of initializations: ", inits)
+    # #print the number of initializations
+    #print("Number of initializations: ", inits)
 
     return inits
 
@@ -128,21 +128,21 @@ def get_physics(model, base_path, experiment):
     # find the directories which match the path
     dirs = glob.glob(path)
 
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # #print the directories which match the path
+    #print("Directories: ", dirs)
 
     # get the final element of each directory path
     final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # print the final directories
-    print("Final directories: ", final_dirs)
+    # #print the final directories
+    #print("Final directories: ", final_dirs)
 
     # extract the number of unique physics forcings
     # as the substring between the characters 'p' and 'f'
     physics = len(set([fd.split("p")[1].split("f")[0] for fd in final_dirs]))
 
-    # print the number of physics forcings
-    print("Number of physics forcings: ", physics)
+    # #print the number of physics forcings
+    #print("Number of physics forcings: ", physics)
 
     return physics
 
@@ -154,21 +154,21 @@ def get_forcing(model, base_path, experiment):
     # find the directories which match the path
     dirs = glob.glob(path)
 
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # #print the directories which match the path
+    #print("Directories: ", dirs)
 
     # get the final element of each directory path
     final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # print the final directories
-    print("Final directories: ", final_dirs)
+    # #print the final directories
+    #print("Final directories: ", final_dirs)
 
     # extract the number of unique forcing scenarios
     # as the substring after the character 'f'
     forcing = len(set([fd.split("f")[-1] for fd in final_dirs]))
 
-    # print the number of forcing scenarios
-    print("Number of forcing scenarios: ", forcing)
+    # #print the number of forcing scenarios
+    #print("Number of forcing scenarios: ", forcing)
 
     return forcing
 
@@ -181,20 +181,20 @@ def get_total_ensemble_members(model, base_path, experiment):
     # find the directories which match the path
     dirs = glob.glob(path)
 
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # #print the directories which match the path
+    #print("Directories: ", dirs)
 
     # get the final element of each directory path
     final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # print the final directories
-    print("Final directories: ", final_dirs)
+    # #print the final directories
+    #print("Final directories: ", final_dirs)
 
     # extract the number of ensemble members
     ensemble_members = len(final_dirs)
 
-    # print the number of ensemble members
-    print("Number of ensemble members: ", ensemble_members)
+    # #print the number of ensemble members
+    #print("Number of ensemble members: ", ensemble_members)
 
     return ensemble_members
 
@@ -211,25 +211,25 @@ def get_table_id(model, base_path, experiment, table_id):
     # find the directories which match the path
     dirs = glob.glob(path)
 
-    # print the first directory which matches the path
-    print("First directory: ", dirs)
-    print("no of directories: ", len(dirs))
+    # #print the first directory which matches the path
+    #print("First directory: ", dirs)
+    #print("no of directories: ", len(dirs))
 
     # Get the table_id from the path
     first_table_id = dirs[0].split("/")[-1]
 
-    # print the first table_id
-    print("First table_id: ", first_table_id)
+    # #print the first table_id
+    #print("First table_id: ", first_table_id)
 
     # Check that the table_id is the same for all ensemble members
     for d in dirs:
         if d.split("/")[-1] != first_table_id:
-            print("Table_id is not the same for all ensemble members")
+            #print("Table_id is not the same for all ensemble members")
             raise ValueError("Table_id is not the same for all ensemble members")
             return None
         
-    # print the table_id
-    print("Table_id: ", first_table_id)
+    # #print the table_id
+    #print("Table_id: ", first_table_id)
 
     return first_table_id
 
@@ -252,7 +252,7 @@ def get_variable(model, base_path, experiment, table_id, variable):
     # if the dirs list is empty
     # then the variable is not available
     if len(dirs) == 0:
-        print("Variable not available")
+        #print("Variable not available")
 
         # Set up output for variable not available
         first_variable = variable
@@ -263,34 +263,34 @@ def get_variable(model, base_path, experiment, table_id, variable):
     # find the directories which match the path for the runs directory
     dirs_runs_dir = glob.glob(path_runs_dir)
 
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # #print the directories which match the path
+    #print("Directories: ", dirs)
 
     # set the number of members available
     # i.e. the number of directories which match the path
     no_members = len(dirs)
-    print("Number of members: ", no_members)
+    #print("Number of members: ", no_members)
 
     # extract the r*i*p*f* directory from the path
     # which is the third from last element
     # e.g. r1i1p1f1
     members_list = [dirs.split("/")[-3] for dirs in dirs]
-    print("Members list: ", members_list)
+    #print("Members list: ", members_list)
 
     # Get the variable name from the first directory
     first_variable = dirs[0].split("/")[-1]
 
-    # print the first variable
-    print("First variable: ", first_variable)
+    # #print the first variable
+    #print("First variable: ", first_variable)
 
     # Check whether the lens of the dirs for the runs directory is the same as the lens of the dirs for the variable
     if len(dirs_runs_dir) != len(dirs):
-        print("Not all runs are available for the variable")
-        print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
-        print("Number of runs available for the variable: ", len(dirs))
+        #print("Not all runs are available for the variable")
+        #print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
+        #print("Number of runs available for the variable: ", len(dirs))
 
-    # print the variable
-    print("Variable: ", first_variable)
+    # #print the variable
+    #print("Variable: ", first_variable)
 
     return first_variable, no_members, members_list
 
