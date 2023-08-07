@@ -295,7 +295,7 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
 
     # create a dictionary to map column names to functions
     column_functions = {
-        "institution": lambda model, base_path, variable: get_institution(model, base_path),
+        "institution": lambda model, base_path, variable: get_institution(model, base_path, variable),
         "source": lambda model, base_path, variable: model,
         "experiment": lambda model, base_path, variable: experiment,
         "runs": lambda model, base_path, variable: get_runs(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
