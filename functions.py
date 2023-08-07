@@ -313,7 +313,9 @@ def get_files(model, base_path, experiment, table_id, variable):
     print("Directories: ", dirs)
 
     # get a list of the files in the final directory
-    files_list = glob.glob(dirs + "*")
+    files_list = []
+    for d in dirs:
+        files_list.extend(glob.glob(os.path.join(d, "*")))
 
     # print the files in the final directory
     print("Files list: ", files_list)
