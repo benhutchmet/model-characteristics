@@ -264,12 +264,16 @@ def get_years(model, base_path, experiment, table_id, variable):
         # which is the fifth from last element
         # e.g. s1960-r1i1p1f1
         years_init_dirs = [dirs.split("/")[-7] for dirs in dirs]
-        print("years_init_dirs: ", years_init_dirs)
+        # print("years_init_dirs: ", years_init_dirs)
 
         # extract the min and max years from the years_init_dirs
         # as the substring between the characters 's' and 'r'
         years = [years_init_dirs.split("s")[1].split("r")[0] for years_init_dirs in years_init_dirs]
-        print("years: ", years)
+        # ensure that each element in the years list is an integer
+        # currently 1960-
+        # get rid of the -
+        years = [years.split("-")[0] for years in years] 
+        # print("years: ", years)
 
         # find the min and max years
         min_year = min(years)
