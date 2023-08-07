@@ -10,4 +10,8 @@ variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
 # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
 base_JASMIN_dir = "/badc/cmip6/data/CMIP6/CMIP"
 
-columns = ['institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members']
+columns = ['institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'table_id', 'variable', 'grid', 'version', 'path']
+
+experiment = "historical"
+
+table_id = "Amon"

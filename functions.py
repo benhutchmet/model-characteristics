@@ -204,3 +204,10 @@ def get_total_ensemble_members(model, base_path, experiment="historical"):
     print("Number of ensemble members: ", ensemble_members)
 
     return ensemble_members
+
+# Define a function to get the table_id
+# such as Amon, Omon, SImon, day, fx, etc.
+# check that the table_id is the same for all ensemble members
+# function takes the model name and the base path and table_id = "Amon"
+# and returns the table_id
+def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
