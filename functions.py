@@ -309,23 +309,23 @@ def get_files(model, base_path, experiment, table_id, variable):
         print("No files available")
         return None
     
-    # print the directories which match the path
-    print("Directories: ", dirs)
+    # # print the directories which match the path
+    # print("Directories: ", dirs)
 
     # get a list of the files in the final directory
     files_list = []
     for d in dirs:
         files_list.extend(glob.glob(os.path.join(d, "*")))
 
-    # print the files in the final directory
-    print("Files list: ", files_list)
+    # # print the files in the final directory
+    # print("Files list: ", files_list)
 
     # extract the final element following the last "/"
     # from each file in the files_list
     files_list = [f.split("/")[-1] for f in files_list]
 
-    # print the files in the final directory
-    print("Files list final dir: ", files_list)
+    # # print the files in the final directory
+    # print("Files list final dir: ", files_list)
 
     return files_list
 
