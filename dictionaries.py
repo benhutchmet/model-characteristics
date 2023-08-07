@@ -15,3 +15,5 @@ columns = ['institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'f
 experiment = "historical"
 
 table_id = "Amon"
+
+test_variable = "psl"

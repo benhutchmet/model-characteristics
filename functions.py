@@ -238,3 +238,37 @@ def get_table_id(model, base_path, experiment="historical", table_id="Amon"):
     print("Table_id: ", first_table_id)
 
     return first_table_id
+
+# Define a function to get the variable name
+# such as psl, tas, tos, rsds, sfcWind, etc.
+# check that the variable is the same for all ensemble members
+# function takes the model name and the base path and the experiment name and table_id and variable name
+# and returns the variable name
+def get_variable(model, base_path, experiment="historical", table_id="Amon", variable="psl"):
+    # Form the path
+    # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+    path = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*/" + table_id + "/" + variable
+
+    # find the directories which match the path
+    dirs = glob.glob(path)
+
+    # print the directories which match the path
+    print("Directories: ", dirs)
+
+    # Get the variable name from the first directory
+    first_variable = dirs[0].split("/")[-1]
+
+    # print the first variable
+    print("First variable: ", first_variable)
+
+    # Check that the variable is the same for all ensemble members
+    for d in dirs:
+        if d.split("/")[-1] != first_variable:
+            print("Variable is not the same for all ensemble members")
+            raise ValueError("Variable is not the same for all ensemble members")
+            return None
+        
+    # print the variable
+    print("Variable: ", first_variable)
+
+    return first_variable
