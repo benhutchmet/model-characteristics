@@ -302,7 +302,9 @@ def fill_dataframe(models, base_path, variables, columns, experiment, table_id):
         "inits": lambda model, base_path, variable: get_inits(model, base_path, experiment=experiment),
         "physics": lambda model, base_path, variable: get_physics(model, base_path, experiment=experiment),
         "forcing": lambda model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
-        "total ensemble members": lambda model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment, variable=variable)
+        "total ensemble members": lambda model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
+        "no_members": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
+        "members_list": lambda model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2]
     }
 
     # iterate over the models, variables, and columns
