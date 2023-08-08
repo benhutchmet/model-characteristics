@@ -715,11 +715,22 @@ def get_files(model, base_path, experiment, table_id, variable):
     
     elif "/gws/nopw/j04/canari/" in base_path:
 
+        # print the inputs to the function
+        print("Model: ", model)
+        print("Experiment: ", experiment)
+        print("Table_id: ", table_id)
+        print("Variable: ", variable)
+
         # form the path
         path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
 
+        print("Path: ", path)
+
         # find the directories which match the path
         dirs = glob.glob(path)
+
+        # print the directories which match the path
+        print("Directories: ", dirs)
 
         # Check that the list of directories is not empty
         if len(dirs) == 0:
@@ -730,11 +741,14 @@ def get_files(model, base_path, experiment, table_id, variable):
         # get a list of the files in the final directory
         files_list = []
         for d in dirs:
-            files_list.extend(glob.glob(os.path.join(d, "*")))
+            print("d: ", d)
+            files_list =[d.split("/")[-1] for d in dirs]
 
-        # extract the final element following the last "/"
-        # from each file in the files_list
-        files_list = [f.split("/")[-1] for f in files_list]
+        print("Files list: ", files_list)
+
+        # # extract the final element following the last "/"
+        # # from each file in the files_list
+        # files_list = [f.split("/")[-1] for f in files_list]
 
     else:
         print("Base path not recognized")
