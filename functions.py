@@ -105,7 +105,7 @@ def get_runs(model, base_path, experiment, variable):
         #print("Number of runs: ", runs)
     elif "/gws/nopw/j04/canari/" in base_path:
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
         # find the directory which matches the path
         dirs = glob.glob(path)
@@ -167,7 +167,7 @@ def get_inits(model, base_path, experiment, variable):
         inits = len(set([fd.split("i")[1].split("p")[0] for fd in final_dirs]))
     elif "/gws/nopw/j04/canari/" in base_path:
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -218,7 +218,7 @@ def get_physics(model, base_path, experiment, variable):
         physics = len(set([fd.split("p")[1].split("f")[0] for fd in final_dirs]))
     elif "/gws/nopw/j04/canari/" in base_path:
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -272,7 +272,7 @@ def get_forcing(model, base_path, experiment, variable):
         # #print the number of forcing scenarios
         #print("Number of forcing scenarios: ", forcing)
     elif "/gws/nopw/j04/canari/" in base_path:
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -325,7 +325,7 @@ def get_total_ensemble_members(model, base_path, experiment, variable):
         #print("Number of ensemble members: ", ensemble_members)
     elif "/gws/nopw/j04/canari/" in base_path:
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -396,7 +396,7 @@ def get_table_id(model, base_path, experiment, table_id, variable):
 
     elif "/gws/nopw/j04/canari/" in base_path:
         # Form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -485,7 +485,7 @@ def get_years(model, base_path, experiment, table_id, variable):
         print("Looking for data in canari GWS path")
 
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -582,7 +582,7 @@ def get_variable(model, base_path, experiment, table_id, variable):
         #print("Variable: ", first_variable)
     elif "/gws/nopw/j04/canari/" in base_path:
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -660,7 +660,7 @@ def get_files(model, base_path, experiment, table_id, variable):
     elif "/gws/nopw/j04/canari/" in base_path:
 
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
