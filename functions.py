@@ -76,30 +76,33 @@ def check_experiment(model, base_path, experiment="historical"):
 # Define a function to get the number of runs for a given model
 # and experiment
 def get_runs(model, base_path, experiment):
-    # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
+  
+    # if base path contains /badc/cmip6/data/CMIP6/
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # form the path
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
-    # find the directory which matches the path
-    dirs = glob.glob(path)
+        # find the directory which matches the path
+        dirs = glob.glob(path)
 
-    # #print the directory which matches the path
-    #print("Directory: ", dirs)
+        # #print the directory which matches the path
+        #print("Directory: ", dirs)
 
-    # get the final element of the path
-    # which is the r*i*p*f* directory
-    final_dirs = [dirs.split("/")[-1] for dirs in dirs]
+        # get the final element of the path
+        # which is the r*i*p*f* directory
+        final_dirs = [dirs.split("/")[-1] for dirs in dirs]
 
-    # #print the final directories
-    #print("Final directories: ", final_dirs)
+        # #print the final directories
+        #print("Final directories: ", final_dirs)
 
-    # extract the number of runs
-    # as the substring between the characters 'r' and 'i'
-    runs = len(set([final_dirs.split("r")[1].split("i")[0] for final_dirs in final_dirs]))
+        # extract the number of runs
+        # as the substring between the characters 'r' and 'i'
+        runs = len(set([final_dirs.split("r")[1].split("i")[0] for final_dirs in final_dirs]))
 
-    # #print the number of runs
-    #print("Number of runs: ", runs)
+        # #print the number of runs
+        #print("Number of runs: ", runs)
 
-    return runs
+        return runs
 
 # Define a similar function to get the number of initialisations
 def get_inits(model, base_path, experiment):

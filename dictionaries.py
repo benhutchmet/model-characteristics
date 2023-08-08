@@ -1,6 +1,7 @@
     # Dictionaries used in the functions.py file and the model_charac.ipynb notebook
 
 # example canari pattern = /gws/nopw/j04/canari/users/benhutch/historical/data/psl/BCC-CSM2-MR
+# example canari file = psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
 canari_dir = "/gws/nopw/j04/canari/users/benhutch/"
 
 
@@ -17,7 +18,7 @@ base_JASMIN_dir_cmip = "/badc/cmip6/data/CMIP6/CMIP"
 
 base_JASMIN_dir_dcpp = "/badc/cmip6/data/CMIP6/DCPP"
 
-columns = [ 'institution', 'source', 'experiment', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list', 'years_range' ]
+columns = [ 'institution', 'source', 'experiment', 'table_id', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list', 'years_range' ]
 
 experiment_hist = "historical"
 
