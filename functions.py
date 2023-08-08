@@ -521,6 +521,20 @@ def get_years(model, base_path, experiment, table_id, variable):
     return years_range    
 
 
+# Write a new function which gets the datasource
+# from the path
+def get_datasource(base_path):
+    
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        datasource = "badc"
+    elif "/gws/nopw/j04/canari/" in base_path:
+        datasource = "canari"
+    else:
+        print("Base path not recognized")
+        return None
+    
+    return datasource
+
 # Define a function to get the variable name
 # such as psl, tas, tos, rsds, sfcWind, etc.
 # check that the variable is the same for all ensemble members
@@ -694,6 +708,7 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
 
     # create a dictionary to map column names to functions
     column_functions = {
+        "data_source": lambda base_path, table_id, experiment, model, variable: get_datasource(base_path),
         "institution": lambda base_path, table_id, experiment, model, variable: get_institution(model, base_path, variable),
         "source": lambda base_path, table_id, experiment, model, variable: model,
         "experiment": lambda base_path, table_id, experiment, model, variable: experiment,

@@ -20,7 +20,7 @@ base_JASMIN_dir_dcpp = "/badc/cmip6/data/CMIP6/DCPP"
 
 base_paths = [ canari_dir, base_JASMIN_dir_cmip, base_JASMIN_dir_dcpp ]
 
-columns = [ 'institution', 'source', 'experiment', 'table_id', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list', 'years_range' ]
+columns = [ 'data_source', 'institution', 'source', 'experiment', 'table_id', 'runs', 'inits', 'physics', 'forcing', 'total ensemble members', 'no_members', 'members_list', 'variable', 'model', 'files_list', 'years_range' ]
 
 experiment_hist = "historical"
 
