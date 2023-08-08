@@ -356,50 +356,134 @@ def get_total_ensemble_members(model, base_path, experiment, variable):
 # check that the table_id is the same for all ensemble members
 # function takes the model name and the base path and table_id = "Amon"
 # and returns the table_id
-def get_table_id(model, base_path, experiment, table_id):
-    # Form the path
-    # # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id
+def get_table_id(model, base_path, experiment, table_id, variable):
+    
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # Form the path
+        # # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id
 
-    # find the directories which match the path
-    dirs = glob.glob(path)
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # #print the first directory which matches the path
-    #print("First directory: ", dirs)
-    #print("no of directories: ", len(dirs))
+        # #print the first directory which matches the path
+        #print("First directory: ", dirs)
+        #print("no of directories: ", len(dirs))
 
-    # if the dirs list is empty
-    # then the variable is not available
-    if len(dirs) == 0:
-        print("Table_id not available for model: ", model + " and experiment: ", experiment)
-        first_table_id = table_id + " not available"
+        # if the dirs list is empty
+        # then the variable is not available
+        if len(dirs) == 0:
+            print("Table_id not available for model: ", model + " and experiment: ", experiment)
+            first_table_id = table_id + " not available"
 
-    # Get the table_id from the path
-    first_table_id = dirs[0].split("/")[-1]
+        # Get the table_id from the path
+        first_table_id = dirs[0].split("/")[-1]
 
-    # #print the first table_id
-    #print("First table_id: ", first_table_id)
+        # #print the first table_id
+        #print("First table_id: ", first_table_id)
 
-    # Check that the table_id is the same for all ensemble members
-    for d in dirs:
-        if d.split("/")[-1] != first_table_id:
-            #print("Table_id is not the same for all ensemble members")
-            raise ValueError("Table_id is not the same for all ensemble members")
-            return None
-        
-    # #print the table_id
-    #print("Table_id: ", first_table_id)
+        # Check that the table_id is the same for all ensemble members
+        for d in dirs:
+            if d.split("/")[-1] != first_table_id:
+                #print("Table_id is not the same for all ensemble members")
+                raise ValueError("Table_id is not the same for all ensemble members")
+                return None
+            
+        # #print the table_id
+        #print("Table_id: ", first_table_id)
+
+    elif "/gws/nopw/j04/canari/" in base_path:
+        # Form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + table_id + "*r*i*p*f*"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # if the dirs list is empty
+        # then the variable is not available
+        if len(dirs) == 0:
+            print("Table_id not available for model: ", model + " and experiment: ", experiment)
+            first_table_id = table_id + " not available"
+
+        # Set the first table_id to the table_id
+        # as if the dirs list is not empty
+        # then the table_id is available
+        first_table_id = table_id
+    else:
+        print("Base path not recognized")
+        return None
 
     return first_table_id
 
 # define a function to extract the years
 # using different methods for different experiments
 def get_years(model, base_path, experiment, table_id, variable):
-    # Form the path
-    if experiment == 'dcppA-hindcast':
-        
-        # set up the path
-        path = base_path + "/*/" + model + "/" + experiment + "/s????-r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+    
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        print("Looking for data on JASMIN badc path")
+        if experiment == 'dcppA-hindcast':
+            
+            # set up the path
+            path = base_path + "/*/" + model + "/" + experiment + "/s????-r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+
+            # find the directories which match the path
+            dirs = glob.glob(path)
+
+            # Check that the list of directories is not empty
+            if len(dirs) == 0:
+                print("No files available")
+                return None
+            
+            # extract the min and max years from the path
+            # if the paths are /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1960-r1i1p1f1/Amon/rsds/gn/files/d* and /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d*
+            # then the min and max years are 1960 and 1970
+            # first extract the s????-r*i*p*f* directory from the path
+            # which is the fifth from last element
+            # e.g. s1960-r1i1p1f1
+            years_init_dirs = [dirs.split("/")[-7] for dirs in dirs]
+            # print("years_init_dirs: ", years_init_dirs)
+
+            # extract the min and max years from the years_init_dirs
+            # as the substring between the characters 's' and 'r'
+            years = [years_init_dirs.split("s")[1].split("r")[0] for years_init_dirs in years_init_dirs]
+            # ensure that each element in the years list is an integer
+            # currently 1960-
+            # get rid of the -
+            years = [years.split("-")[0] for years in years] 
+            # print("years: ", years)
+
+            # find the min and max years
+            min_year = min(years)
+            max_year = max(years)
+
+            # form the range of years
+            # e.g 1960-1970
+            years_range = min_year + "-" + max_year
+
+        elif experiment == 'historical':
+            # get the list of files in the final directory
+            files_list = get_files(model, base_path, experiment, table_id, variable)
+            # Check that the list of files is not empty
+            if len(files_list) == 0:
+                print("No files available")
+                years_range = "No files"
+                return years_range
+            # extract the years from the filenames
+            # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+            min_year = re.findall(r'\d{4}', files_list[0])[0]
+            max_year = re.findall(r'\d{4}', files_list[0])[1]
+
+            # form the range of years
+            # e.g 1850-2014
+            years_range = min_year + "-" + max_year
+        else:
+            print("Experiment not recognized")
+            return None
+    elif "/gws/nopw/j04/canari/" in base_path:
+        print("Looking for data in canari GWS path")
+
+        # form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -407,53 +491,29 @@ def get_years(model, base_path, experiment, table_id, variable):
         # Check that the list of directories is not empty
         if len(dirs) == 0:
             print("No files available")
-            return None
-        
-        # extract the min and max years from the path
-        # if the paths are /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1960-r1i1p1f1/Amon/rsds/gn/files/d* and /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d*
-        # then the min and max years are 1960 and 1970
-        # first extract the s????-r*i*p*f* directory from the path
-        # which is the fifth from last element
-        # e.g. s1960-r1i1p1f1
-        years_init_dirs = [dirs.split("/")[-7] for dirs in dirs]
-        # print("years_init_dirs: ", years_init_dirs)
-
-        # extract the min and max years from the years_init_dirs
-        # as the substring between the characters 's' and 'r'
-        years = [years_init_dirs.split("s")[1].split("r")[0] for years_init_dirs in years_init_dirs]
-        # ensure that each element in the years list is an integer
-        # currently 1960-
-        # get rid of the -
-        years = [years.split("-")[0] for years in years] 
-        # print("years: ", years)
-
-        # find the min and max years
-        min_year = min(years)
-        max_year = max(years)
-
-        # form the range of years
-        # e.g 1960-1970
-        years_range = min_year + "-" + max_year
-
-    elif experiment == 'historical':
-        # get the list of files in the final directory
-        files_list = get_files(model, base_path, experiment, table_id, variable)
-        # Check that the list of files is not empty
-        if len(files_list) == 0:
-            print("No files available")
             years_range = "No files"
             return years_range
-        # extract the years from the filenames
-        # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
-        min_year = re.findall(r'\d{4}', files_list[0])[0]
-        max_year = re.findall(r'\d{4}', files_list[0])[1]
+        
+        # get the final element of the directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
+
+        # split the final_dirs on the character '_' and take the 4th element
+        # e.g. psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+        # then take the 7th element
+        split_final_dirs = [fd.split("_")[6] for fd in final_dirs]
+
+        # this will give dates in the format 185001-201412.nc
+        # extract the min and max years from the split_final_dirs
+        min_year = re.findall(r'\d{4}', split_final_dirs[0])[0]
+        max_year = re.findall(r'\d{4}', split_final_dirs[0])[1]
 
         # form the range of years
         # e.g 1850-2014
         years_range = min_year + "-" + max_year
     else:
-        print("Experiment not recognized")
+        print("Base path not recognized")
         return None
+
     # return the list of years
     return years_range    
 
