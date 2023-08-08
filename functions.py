@@ -835,7 +835,8 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
         "variable": lambda base_path, table_id, experiment, model, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
         "model": lambda base_path, table_id, experiment, model, variable: model,
         "files_list": lambda base_path, table_id, experiment, model, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "years_range": lambda base_path, table_id, experiment, model, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
+        "years_range": lambda base_path, table_id, experiment, model, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "no_empty_files": lambda base_path, table_id, experiment, model, variable: get_empty_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
     }
 
 
