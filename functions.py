@@ -222,6 +222,12 @@ def get_table_id(model, base_path, experiment, table_id):
     #print("First directory: ", dirs)
     #print("no of directories: ", len(dirs))
 
+    # if the dirs list is empty
+    # then the variable is not available
+    if len(dirs) == 0:
+        print("Table_id not available for model: ", model + " and experiment: ", experiment)
+        first_table_id = table_id + " not available"
+
     # Get the table_id from the path
     first_table_id = dirs[0].split("/")[-1]
 
@@ -404,67 +410,74 @@ def get_files(model, base_path, experiment, table_id, variable):
     return files_list
 
 # Define a function to fill in the dataframe
-def fill_dataframe(models, variables, columns, experiments, table_id):
+def fill_dataframe(models, variables, columns, experiments, table_ids):
     # create an empty dataframe with the desired columns
     df = pd.DataFrame(columns=columns)
 
     # create a dictionary to map column names to functions
     column_functions = {
-        "institution": lambda experiment, model, base_path, variable: get_institution(model, base_path, variable),
-        "source": lambda experiment, model, base_path, variable: model,
-        "experiment": lambda experiment, model, base_path, variable: experiment,
-        "runs": lambda experiment, model, base_path, variable: get_runs(model, base_path, experiment=experiment),
-        "inits": lambda experiment, model, base_path, variable: get_inits(model, base_path, experiment=experiment),
-        "physics": lambda experiment, model, base_path, variable: get_physics(model, base_path, experiment=experiment),
-        "forcing": lambda experiment, model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
-        "total ensemble members": lambda experiment, model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
-        "no_members": lambda experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
-        "members_list": lambda experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
-        "variable": lambda experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
-        "model": lambda experiment, model, base_path, variable: model,
-        "files_list": lambda experiment, model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "years_range": lambda experiment, model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
+        "institution": lambda table_id, experiment, model, base_path, variable: get_institution(model, base_path, variable),
+        "source": lambda table_id, experiment, model, base_path, variable: model,
+        "experiment": lambda table_id, experiment, model, base_path, variable: experiment,
+        "table_id": lambda table_id, experiment, model, base_path, variable: get_table_id(model, base_path, experiment=experiment, table_id=table_id),
+        "runs": lambda table_id, experiment, model, base_path, variable: get_runs(model, base_path, experiment=experiment),
+        "inits": lambda table_id, experiment, model, base_path, variable: get_inits(model, base_path, experiment=experiment),
+        "physics": lambda table_id, experiment, model, base_path, variable: get_physics(model, base_path, experiment=experiment),
+        "forcing": lambda table_id, experiment, model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
+        "total ensemble members": lambda table_id, experiment, model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
+        "no_members": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
+        "members_list": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
+        "variable": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
+        "model": lambda table_id, experiment, model, base_path, variable: model,
+        "files_list": lambda table_id, experiment, model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "years_range": lambda table_id, experiment, model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
     }
 
-    # iterate over the experiments and variables
-    for experiment in experiments:
-        # Print the experiment which is being processed
-        print("Experiment: ", experiment)
 
-        # Set the base path
-        if experiment == "historical":
-            base_path = "/badc/cmip6/data/CMIP6/CMIP"
-        elif experiment == "dcppA-hindcast":
-            base_path = "/badc/cmip6/data/CMIP6/DCPP"
-        else:
-            print("Experiment not recognized")
-            return None
-        
-        # iterate over the models and variables
-        for model in models:
+    # iterate over the list of table ids
+    for table_id in table_ids:
+        # Print the table_id which is being processed
+        print("Table_id: ", table_id)
 
-            # Print the model which is being processed
-            print("Model: ", model)
+        # iterate over the experiments and variables
+        for experiment in experiments:
+            # Print the experiment which is being processed
+            print("Experiment: ", experiment)
 
-            for variable in variables:
+            # Set the base path
+            if experiment == "historical":
+                base_path = "/badc/cmip6/data/CMIP6/CMIP"
+            elif experiment == "dcppA-hindcast":
+                base_path = "/badc/cmip6/data/CMIP6/DCPP"
+            else:
+                print("Experiment not recognized")
+                return None
+            
+            # iterate over the models and variables
+            for model in models:
 
-                # Print the variable which is being processed
-                print("Variable: ", variable)
-                # create a dictionary to hold the values for this combination of model and variable
-                row_dict = {}
+                # Print the model which is being processed
+                print("Model: ", model)
 
-                # iterate over the columns and add the values to the dictionary
-                for column in columns:
-                    # get the function corresponding to the column name
-                    column_function = column_functions[column]
+                for variable in variables:
 
-                    # call the function to get the value for the current model, variable, and column and experiment
-                    value = column_function(experiment, model, base_path, variable)
+                    # Print the variable which is being processed
+                    print("Variable: ", variable)
+                    # create a dictionary to hold the values for this combination of model and variable
+                    row_dict = {}
 
-                    # add the column value to the dictionary
-                    row_dict[column] = value
+                    # iterate over the columns and add the values to the dictionary
+                    for column in columns:
+                        # get the function corresponding to the column name
+                        column_function = column_functions[column]
 
-                # append the row dictionary to the dataframe as a new row
-                df = df.append(row_dict, ignore_index=True)
+                        # call the function to get the value for the current model, variable, and column and experiment
+                        value = column_function(table_id, table_id, experiment, model, base_path, variable)
+
+                        # add the column value to the dictionary
+                        row_dict[column] = value
+
+                    # append the row dictionary to the dataframe as a new row
+                    df = df.append(row_dict, ignore_index=True)
 
     return df

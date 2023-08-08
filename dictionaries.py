@@ -27,6 +27,8 @@ experiments = [ "historical", "dcppA-hindcast" ]
 
 table_id = "Amon"
 
+table_ids = [ "Amon", "day", "6hr" ]
+
 test_variable = "psl"
 
 test_model = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR" ]
