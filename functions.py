@@ -27,24 +27,26 @@ def get_institution(model, base_path, variable):
     # which is formed as:
     # base_path + / + institution + / + model
     # e.g. /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # form the path
+        path = base_path + "/*/" + model
 
-    # form the path
-    path = base_path + "/*/" + model
+        # find the directory which matches the path
+        dirs = glob.glob(path)
 
-    # find the directory which matches the path
-    dirs = glob.glob(path)
+        # if the dirs list is empty
+        # then the variable is not available
+        if len(dirs) == 0:
+            print("Model not available")
+            return None
 
-    # if the dirs list is empty
-    # then the variable is not available
-    if len(dirs) == 0:
-        print("Model not available")
-        return None
+        # split the path to get the institution name
+        institution = dirs[0].split("/")[6]
 
-    # split the path to get the institution name
-    institution = dirs[0].split("/")[6]
-
-    # #print the institution name
-    #print("Institution: ", institution)
+        # #print the institution name
+        #print("Institution: ", institution)
+    elif "/gws/nopw/j04/canari/" in base_path:
+        institution = "-"
 
     return institution
 
@@ -677,7 +679,7 @@ def get_files(model, base_path, experiment, table_id, variable):
         # extract the final element following the last "/"
         # from each file in the files_list
         files_list = [f.split("/")[-1] for f in files_list]
-        
+
     else:
         print("Base path not recognized")
         return None
@@ -685,74 +687,143 @@ def get_files(model, base_path, experiment, table_id, variable):
     return files_list
 
 # Define a function to fill in the dataframe
-def fill_dataframe(models, variables, columns, experiments, table_ids):
+def fill_dataframe(base_paths, models, variables, columns, experiments, table_ids):
     # create an empty dataframe with the desired columns
     df = pd.DataFrame(columns=columns)
 
     # create a dictionary to map column names to functions
     column_functions = {
-        "institution": lambda table_id, experiment, model, base_path, variable: get_institution(model, base_path, variable),
-        "source": lambda table_id, experiment, model, base_path, variable: model,
-        "experiment": lambda table_id, experiment, model, base_path, variable: experiment,
-        "table_id": lambda table_id, experiment, model, base_path, variable: get_table_id(model, base_path, experiment=experiment, table_id=table_id),
-        "runs": lambda table_id, experiment, model, base_path, variable: get_runs(model, base_path, experiment=experiment),
-        "inits": lambda table_id, experiment, model, base_path, variable: get_inits(model, base_path, experiment=experiment),
-        "physics": lambda table_id, experiment, model, base_path, variable: get_physics(model, base_path, experiment=experiment),
-        "forcing": lambda table_id, experiment, model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
-        "total ensemble members": lambda table_id, experiment, model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
-        "no_members": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
-        "members_list": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
-        "variable": lambda table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
-        "model": lambda table_id, experiment, model, base_path, variable: model,
-        "files_list": lambda table_id, experiment, model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "years_range": lambda table_id, experiment, model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
+        "institution": lambda base_path, table_id, experiment, model, base_path, variable: get_institution(model, base_path, variable),
+        "source": lambda base_path, table_id, experiment, model, base_path, variable: model,
+        "experiment": lambda base_path, table_id, experiment, model, base_path, variable: experiment,
+        "table_id": lambda base_path, table_id, experiment, model, base_path, variable: get_table_id(model, base_path, experiment=experiment, table_id=table_id),
+        "runs": lambda base_path, table_id, experiment, model, base_path, variable: get_runs(model, base_path, experiment=experiment),
+        "inits": lambda base_path, table_id, experiment, model, base_path, variable: get_inits(model, base_path, experiment=experiment),
+        "physics": lambda base_path, table_id, experiment, model, base_path, variable: get_physics(model, base_path, experiment=experiment),
+        "forcing": lambda base_path, table_id, experiment, model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
+        "total ensemble members": lambda base_path, table_id, experiment, model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
+        "no_members": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
+        "members_list": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
+        "variable": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
+        "model": lambda base_path, table_id, experiment, model, base_path, variable: model,
+        "files_list": lambda base_path, table_id, experiment, model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "years_range": lambda base_path, table_id, experiment, model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
     }
 
 
-    # iterate over the list of table ids
-    for table_id in table_ids:
-        # Print the table_id which is being processed
-        print("Table_id: ", table_id)
+    # loop over the list of base paths
+    # to look into both canari and badc paths
+    for base_path in base_paths:
+        print("Base path: ", base_path)
 
-        # iterate over the experiments and variables
-        for experiment in experiments:
-            # Print the experiment which is being processed
-            print("Experiment: ", experiment)
+        # iterate over the list of table ids
+        for table_id in table_ids:
+            # Print the table_id which is being processed
+            print("Table_id: ", table_id)
 
-            # Set the base path
-            if experiment == "historical":
-                base_path = "/badc/cmip6/data/CMIP6/CMIP"
-            elif experiment == "dcppA-hindcast":
-                base_path = "/badc/cmip6/data/CMIP6/DCPP"
+            # if the base path is the canari path
+            if "/gws/nopw/j04/canari/" in base_path:
+                # iterate over the experiments and variables
+                print("Looping over experiments and variables for canari path")
+                # iterate over the experiments and variables
+                for experiment in experiments:
+                    # Print the experiment which is being processed
+                    print("Experiment: ", experiment)
+                    
+                    # iterate over the models and variables
+                    for model in models:
+
+                        # Print the model which is being processed
+                        print("Model: ", model)
+
+                        for variable in variables:
+
+                            # Print the variable which is being processed
+                            print("Variable: ", variable)
+                            # create a dictionary to hold the values for this combination of model and variable
+                            row_dict = {}
+
+                            # iterate over the columns and add the values to the dictionary
+                            for column in columns:
+                                # get the function corresponding to the column name
+                                column_function = column_functions[column]
+
+                                # call the function to get the value for the current model, variable, and column and experiment
+                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+
+                                # add the column value to the dictionary
+                                row_dict[column] = value
+
+                            # append the row dictionary to the dataframe as a new row
+                            df = df.append(row_dict, ignore_index=True)
+            elif "badc/cmip6/data/CMIP6/" in base_path:
+                # if the base path ends in CMIP
+                # then the experiment is "historical"
+                if base_path.endswith("/CMIP"):
+                    # set the experiment to "historical"
+                    experiment = "historical"
+                    print("Experiment: ", experiment)
+
+                    # iterate over the models and variables
+                    for model in models:
+                            
+                        # Print the model which is being processed
+                        print("Model: ", model)
+
+                        for variable in variables:
+
+                            # Print the variable which is being processed
+                            print("Variable: ", variable)
+                            # create a dictionary to hold the values for this combination of model and variable
+                            row_dict = {}
+
+                            # iterate over the columns and add the values to the dictionary
+                            for column in columns:
+                                # get the function corresponding to the column name
+                                column_function = column_functions[column]
+
+                                # call the function to get the value for the current model, variable, and column and experiment
+                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+
+                                # add the column value to the dictionary
+                                row_dict[column] = value
+
+                            # append the row dictionary to the dataframe as a new row
+                            df = df.append(row_dict, ignore_index=True)
+                elif base_path.endswith("/DCPP"):
+                    # set the experiment to "dcppA-hindcast"
+                    experiment = "dcppA-hindcast"
+
+                    # iterate over the models and variables
+                    for model in models:
+                            
+                        # Print the model which is being processed
+                        print("Model: ", model)
+
+                        for variable in variables:
+
+                            # Print the variable which is being processed
+                            print("Variable: ", variable)
+                            # create a dictionary to hold the values for this combination of model and variable
+                            row_dict = {}
+
+                            # iterate over the columns and add the values to the dictionary
+                            for column in columns:
+                                # get the function corresponding to the column name
+                                column_function = column_functions[column]
+
+                                # call the function to get the value for the current model, variable, and column and experiment
+                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+
+                                # add the column value to the dictionary
+                                row_dict[column] = value
+
+                            # append the row dictionary to the dataframe as a new row
+                            df = df.append(row_dict, ignore_index=True)
+                else:
+                    print("End of base path not recognized")
+                    return None
             else:
-                print("Experiment not recognized")
+                print("Base path not recognized")
                 return None
-            
-            # iterate over the models and variables
-            for model in models:
-
-                # Print the model which is being processed
-                print("Model: ", model)
-
-                for variable in variables:
-
-                    # Print the variable which is being processed
-                    print("Variable: ", variable)
-                    # create a dictionary to hold the values for this combination of model and variable
-                    row_dict = {}
-
-                    # iterate over the columns and add the values to the dictionary
-                    for column in columns:
-                        # get the function corresponding to the column name
-                        column_function = column_functions[column]
-
-                        # call the function to get the value for the current model, variable, and column and experiment
-                        value = column_function(table_id, experiment, model, base_path, variable)
-
-                        # add the column value to the dictionary
-                        row_dict[column] = value
-
-                    # append the row dictionary to the dataframe as a new row
-                    df = df.append(row_dict, ignore_index=True)
-
     return df
