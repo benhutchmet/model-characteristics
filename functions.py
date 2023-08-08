@@ -693,21 +693,21 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
 
     # create a dictionary to map column names to functions
     column_functions = {
-        "institution": lambda base_path, table_id, experiment, model, base_path, variable: get_institution(model, base_path, variable),
-        "source": lambda base_path, table_id, experiment, model, base_path, variable: model,
-        "experiment": lambda base_path, table_id, experiment, model, base_path, variable: experiment,
-        "table_id": lambda base_path, table_id, experiment, model, base_path, variable: get_table_id(model, base_path, experiment=experiment, table_id=table_id),
-        "runs": lambda base_path, table_id, experiment, model, base_path, variable: get_runs(model, base_path, experiment=experiment),
-        "inits": lambda base_path, table_id, experiment, model, base_path, variable: get_inits(model, base_path, experiment=experiment),
-        "physics": lambda base_path, table_id, experiment, model, base_path, variable: get_physics(model, base_path, experiment=experiment),
-        "forcing": lambda base_path, table_id, experiment, model, base_path, variable: get_forcing(model, base_path, experiment=experiment),
-        "total ensemble members": lambda base_path, table_id, experiment, model, base_path, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
-        "no_members": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
-        "members_list": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
-        "variable": lambda base_path, table_id, experiment, model, base_path, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
-        "model": lambda base_path, table_id, experiment, model, base_path, variable: model,
-        "files_list": lambda base_path, table_id, experiment, model, base_path, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
-        "years_range": lambda base_path, table_id, experiment, model, base_path, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
+        "institution": lambda base_path, table_id, experiment, model, variable: get_institution(model, base_path, variable),
+        "source": lambda base_path, table_id, experiment, model, variable: model,
+        "experiment": lambda base_path, table_id, experiment, model, variable: experiment,
+        "table_id": lambda base_path, table_id, experiment, model, variable: get_table_id(model, base_path, experiment=experiment, table_id=table_id),
+        "runs": lambda base_path, table_id, experiment, model, variable: get_runs(model, base_path, experiment=experiment),
+        "inits": lambda base_path, table_id, experiment, model, variable: get_inits(model, base_path, experiment=experiment),
+        "physics": lambda base_path, table_id, experiment, model, variable: get_physics(model, base_path, experiment=experiment),
+        "forcing": lambda base_path, table_id, experiment, model, variable: get_forcing(model, base_path, experiment=experiment),
+        "total ensemble members": lambda base_path, table_id, experiment, model, variable: get_total_ensemble_members(model, base_path, experiment=experiment),
+        "no_members": lambda base_path, table_id, experiment, model, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[1],
+        "members_list": lambda base_path, table_id, experiment, model, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[2],
+        "variable": lambda base_path, table_id, experiment, model, variable: get_variable(model, base_path, experiment=experiment, table_id=table_id, variable=variable)[0],
+        "model": lambda base_path, table_id, experiment, model, variable: model,
+        "files_list": lambda base_path, table_id, experiment, model, variable: get_files(model, base_path, experiment=experiment, table_id=table_id, variable=variable),
+        "years_range": lambda base_path, table_id, experiment, model, variable: get_years(model, base_path, experiment=experiment, table_id=table_id, variable=variable)
     }
 
 
@@ -749,7 +749,7 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
                                 column_function = column_functions[column]
 
                                 # call the function to get the value for the current model, variable, and column and experiment
-                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+                                value = column_function(base_path, table_id, experiment, model, variable)
 
                                 # add the column value to the dictionary
                                 row_dict[column] = value
@@ -783,7 +783,7 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
                                 column_function = column_functions[column]
 
                                 # call the function to get the value for the current model, variable, and column and experiment
-                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+                                value = column_function(base_path, table_id, experiment, model, variable)
 
                                 # add the column value to the dictionary
                                 row_dict[column] = value
@@ -813,7 +813,7 @@ def fill_dataframe(base_paths, models, variables, columns, experiments, table_id
                                 column_function = column_functions[column]
 
                                 # call the function to get the value for the current model, variable, and column and experiment
-                                value = column_function(base_path, table_id, experiment, model, base_path, variable)
+                                value = column_function(base_path, table_id, experiment, model, variable)
 
                                 # add the column value to the dictionary
                                 row_dict[column] = value
