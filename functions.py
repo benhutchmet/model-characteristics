@@ -466,16 +466,27 @@ def get_years(model, base_path, experiment, table_id, variable):
                 print("No files available")
                 years_range = "No files"
                 return years_range
+            
             # extract the years from the filenames
-            # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+            # initialize the years list
             years = []
-            for file in files_list:
-                year_str = re.findall(r'\d{4}', file)
-                if len(year_str) == 2:
-                    years.append(year_str)
-
-            # flatten the list of years
-            years = [year for sublist in years for year in sublist]
+            if table_id == "Amon":
+                for file in files_list:
+                    year_str = re.findall(r'\d{4}', file)
+                    if len(year_str) == 2:
+                        years.append(year_str)
+            elif table_id == "day":
+                # format 19750101-19991231
+                for file in files_list:
+                    year_str = re.findall(r'\d{8}', file)
+                    if len(year_str) == 2:
+                        years.extend([year_str[0][:4], year_str[1][:4]])
+            elif table_id == "6hr":
+                # format 185001010000-201412312100
+                for file in files_list:
+                    year_str = re.findall(r'\d{12}', file)
+                    if len(year_str) == 2:
+                        years.extend([year_str[0][:4], year_str[1][:4]])
 
             # find the min and max years
             min_year = min(years)
@@ -513,9 +524,18 @@ def get_years(model, base_path, experiment, table_id, variable):
         # extract the min and max years from the split_final_dirs
         years = []
         for fd in split_final_dirs:
-            year_str = re.findall(r'\d{4}', fd)
-            if len(year_str) == 2:
-                years.extend(year_str)
+            if table_id == "Amon":
+                year_str = re.findall(r'\d{4}', fd)
+                if len(year_str) == 2:
+                    years.extend(year_str)
+            elif table_id == "day":
+                year_str = re.findall(r'\d{8}', fd)
+                if len(year_str) == 2:
+                    years.extend([year_str[0][:4], year_str[1][:4]])
+            elif table_id == "6hr":
+                year_str = re.findall(r'\d{12}', fd)
+                if len(year_str) == 2:
+                    years.extend([year_str[0][:4], year_str[1][:4]])
 
         # find the min and max years
         min_year = min(years)
