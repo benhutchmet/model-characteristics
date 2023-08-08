@@ -472,7 +472,7 @@ def fill_dataframe(models, variables, columns, experiments, table_ids):
                         column_function = column_functions[column]
 
                         # call the function to get the value for the current model, variable, and column and experiment
-                        value = column_function(table_id, table_id, experiment, model, base_path, variable)
+                        value = column_function(table_id, experiment, model, base_path, variable)
 
                         # add the column value to the dictionary
                         row_dict[column] = value
