@@ -377,6 +377,7 @@ def get_table_id(model, base_path, experiment, table_id, variable):
         if len(dirs) == 0:
             print("Table_id not available for model: ", model + " and experiment: ", experiment)
             first_table_id = table_id + " not available"
+            return first_table_id
 
         # Get the table_id from the path
         first_table_id = dirs[0].split("/")[-1]
