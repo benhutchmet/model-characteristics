@@ -394,7 +394,7 @@ def get_table_id(model, base_path, experiment, table_id, variable):
 
     elif "/gws/nopw/j04/canari/" in base_path:
         # Form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -483,7 +483,7 @@ def get_years(model, base_path, experiment, table_id, variable):
         print("Looking for data in canari GWS path")
 
         # form the path
-        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*" + table_id + "*r*i*p*f*"
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -524,58 +524,66 @@ def get_years(model, base_path, experiment, table_id, variable):
 # function takes the model name and the base path and the experiment name and table_id and variable name
 # and returns the variable name
 def get_variable(model, base_path, experiment, table_id, variable):
-    # Form the path
-    # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable
+    
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # Form the path
+        # based on /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable
 
-    # path for the runs directory
-    path_runs_dir = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
+        # path for the runs directory
+        path_runs_dir = base_path + "/*/" + model + "/" + experiment + "/r*i*p*f*"
 
-    # find the directories which match the path
-    dirs = glob.glob(path)
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # if the dirs list is empty
-    # then the variable is not available
-    if len(dirs) == 0:
-        #print("Variable not available")
+        # if the dirs list is empty
+        # then the variable is not available
+        if len(dirs) == 0:
+            #print("Variable not available")
 
-        # Set up output for variable not available
-        first_variable = variable
-        no_members = 0
-        members_list = []
-        return first_variable, no_members, members_list
+            # Set up output for variable not available
+            first_variable = variable
+            no_members = 0
+            members_list = []
+            return first_variable, no_members, members_list
 
-    # find the directories which match the path for the runs directory
-    dirs_runs_dir = glob.glob(path_runs_dir)
+        # find the directories which match the path for the runs directory
+        dirs_runs_dir = glob.glob(path_runs_dir)
 
-    # #print the directories which match the path
-    #print("Directories: ", dirs)
+        # #print the directories which match the path
+        #print("Directories: ", dirs)
 
-    # set the number of members available
-    # i.e. the number of directories which match the path
-    no_members = len(dirs)
-    #print("Number of members: ", no_members)
+        # set the number of members available
+        # i.e. the number of directories which match the path
+        no_members = len(dirs)
+        #print("Number of members: ", no_members)
 
-    # extract the r*i*p*f* directory from the path
-    # which is the third from last element
-    # e.g. r1i1p1f1
-    members_list = [dirs.split("/")[-3] for dirs in dirs]
-    #print("Members list: ", members_list)
+        # extract the r*i*p*f* directory from the path
+        # which is the third from last element
+        # e.g. r1i1p1f1
+        members_list = [dirs.split("/")[-3] for dirs in dirs]
+        #print("Members list: ", members_list)
 
-    # Get the variable name from the first directory
-    first_variable = dirs[0].split("/")[-1]
+        # Get the variable name from the first directory
+        first_variable = dirs[0].split("/")[-1]
 
-    # #print the first variable
-    #print("First variable: ", first_variable)
+        # #print the first variable
+        #print("First variable: ", first_variable)
 
-    # Check whether the lens of the dirs for the runs directory is the same as the lens of the dirs for the variable
-    if len(dirs_runs_dir) != len(dirs):
-        print("Not all runs are available for the variable")
-        print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
-        print("Number of runs available for the variable: ", len(dirs))
+        # Check whether the lens of the dirs for the runs directory is the same as the lens of the dirs for the variable
+        if len(dirs_runs_dir) != len(dirs):
+            print("Not all runs are available for the variable")
+            print("Number of runs available for the runs directory: ", len(dirs_runs_dir))
+            print("Number of runs available for the variable: ", len(dirs))
 
-    # #print the variable
-    #print("Variable: ", first_variable)
+        # #print the variable
+        #print("Variable: ", first_variable)
+    elif "/gws/nopw/j04/canari/" in base_path:
+        # form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
     return first_variable, no_members, members_list
 
