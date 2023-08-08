@@ -194,81 +194,160 @@ def get_inits(model, base_path, experiment, variable):
 
     return inits
 
-# Define a function to get the number of physics ensembles
-def get_physics(model, base_path, experiment):
-    # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
+# Define a function to get the number of physics forcings
+def get_physics(model, base_path, experiment, variable):
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # form the path
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
-    # find the directories which match the path
-    dirs = glob.glob(path)
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # #print the directories which match the path
-    #print("Directories: ", dirs)
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            return None
 
-    # get the final element of each directory path
-    final_dirs = [d.split("/")[-1] for d in dirs]
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # #print the final directories
-    #print("Final directories: ", final_dirs)
+        # extract the number of unique physics forcings
+        # as the substring between the characters 'p' and 'f'
+        physics = len(set([fd.split("p")[1].split("f")[0] for fd in final_dirs]))
+    elif "/gws/nopw/j04/canari/" in base_path:
+        # form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
-    # extract the number of unique physics forcings
-    # as the substring between the characters 'p' and 'f'
-    physics = len(set([fd.split("p")[1].split("f")[0] for fd in final_dirs]))
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # #print the number of physics forcings
-    #print("Number of physics forcings: ", physics)
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            return None
+
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
+
+        # extract the number of unique physics forcings
+        # as the substring between the characters 'p' and 'f'
+        # in psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+        # first split the final_dirs on the character '_'
+        # then take the 5th element
+        split_final_dirs = [fd.split("_")[4] for fd in final_dirs]
+
+        # extract the number of unique physics forcings
+        # as the substring between the characters 'p' and 'f'
+        physics = len(set([sfd.split("p")[1].split("f")[0] for sfd in split_final_dirs]))
+    else:
+        print("Base path not recognized")
+        return None
 
     return physics
 
 # For the forcing
-def get_forcing(model, base_path, experiment):
+def get_forcing(model, base_path, experiment, variable):
     # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
-    # find the directories which match the path
-    dirs = glob.glob(path)
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # #print the directories which match the path
-    #print("Directories: ", dirs)
+        # #print the directories which match the path
+        #print("Directories: ", dirs)
 
-    # get the final element of each directory path
-    final_dirs = [d.split("/")[-1] for d in dirs]
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # #print the final directories
-    #print("Final directories: ", final_dirs)
+        # #print the final directories
+        #print("Final directories: ", final_dirs)
 
-    # extract the number of unique forcing scenarios
-    # as the substring after the character 'f'
-    forcing = len(set([fd.split("f")[-1] for fd in final_dirs]))
+        # extract the number of unique forcing scenarios
+        # as the substring after the character 'f'
+        forcing = len(set([fd.split("f")[-1] for fd in final_dirs]))
 
-    # #print the number of forcing scenarios
-    #print("Number of forcing scenarios: ", forcing)
+        # #print the number of forcing scenarios
+        #print("Number of forcing scenarios: ", forcing)
+    elif "/gws/nopw/j04/canari/" in base_path:
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
 
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            return None
+        
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
+
+        # split the final_dirs on the character '_'
+        # then take the 5th element
+        split_final_dirs = [fd.split("_")[4] for fd in final_dirs]
+
+        # extract the number of unique forcing scenarios
+        # as the substring after the character 'f'
+        forcing = len(set([sfd.split("f")[-1] for sfd in split_final_dirs]))
+    else:
+        print("Base path not recognized")
+        return None
+    
     return forcing
 
 # Define a function to get the total number of ensemble members
 # this is the total number of directories which match the path
-def get_total_ensemble_members(model, base_path, experiment):
-    # form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
+def get_total_ensemble_members(model, base_path, experiment, variable):
+    
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # form the path
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*"
 
-    # find the directories which match the path
-    dirs = glob.glob(path)
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # #print the directories which match the path
-    #print("Directories: ", dirs)
+        # #print the directories which match the path
+        #print("Directories: ", dirs)
 
-    # get the final element of each directory path
-    final_dirs = [d.split("/")[-1] for d in dirs]
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
 
-    # #print the final directories
-    #print("Final directories: ", final_dirs)
+        # #print the final directories
+        #print("Final directories: ", final_dirs)
 
-    # extract the number of ensemble members
-    ensemble_members = len(final_dirs)
+        # extract the number of ensemble members
+        ensemble_members = len(final_dirs)
 
-    # #print the number of ensemble members
-    #print("Number of ensemble members: ", ensemble_members)
+        # #print the number of ensemble members
+        #print("Number of ensemble members: ", ensemble_members)
+    elif "/gws/nopw/j04/canari/" in base_path:
+        # form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/*r*i*p*f*"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            return None
+
+        # #print the directories which match the path
+        #print("Directories: ", dirs)
+
+        # get the final element of each directory path
+        final_dirs = [d.split("/")[-1] for d in dirs]
+
+        # split the final_dirs on the character '_'
+        # then take the 5th element
+        split_final_dirs = [fd.split("_")[4] for fd in final_dirs]
+
+        # Count the number of unique r*i*p*f* combinations
+        ensemble_members = len(set(split_final_dirs))
+    else:
+        print("Base path not recognized")
+        return None
 
     return ensemble_members
 
