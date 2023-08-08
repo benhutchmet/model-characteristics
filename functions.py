@@ -585,41 +585,102 @@ def get_variable(model, base_path, experiment, table_id, variable):
         # find the directories which match the path
         dirs = glob.glob(path)
 
+        # if the dirs list is empty
+        # then the variable is not available
+        if len(dirs) == 0:
+
+            # Set up output for variable not available
+            first_variable = variable
+            no_members = 0
+            members_list = []
+            return first_variable, no_members, members_list
+        
+        # get the number of members available
+        # i.e. the number of directories which match the path with unique r*i*p*f* combinations
+        # e.g. psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
+        # first split the dirs and take the final element
+        final_dirs = [dirs.split("/")[-1] for dirs in dirs]
+
+        members_list = [final_dirs.split("_")[4] for final_dirs in final_dirs]
+
+        # split the final_dirs on the character '_'
+        # then take the 4th element
+        split_final_dirs = [fd.split("_")[4] for fd in final_dirs]
+
+        # Count the number of unique r*i*p*f* combinations
+        no_members = len(set(split_final_dirs))
+
+        # Get the variable name from the first directory
+        first_variable = variable
+
+    else:
+        print("Base path not recognized")
+        return None
+
     return first_variable, no_members, members_list
 
 # Define a function to get the list of files for a given model, experiment, table_id, variable
 # in the final directory
 def get_files(model, base_path, experiment, table_id, variable):
-    # Form the path
-    path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
-    print("Path: ", path)
-
-    # find the directories which match the path
-    dirs = glob.glob(path)
-
-    # Check that the list of directories is not empty
-    if len(dirs) == 0:
-        print("No files available")
-        files_list = []
-        return files_list
     
-    # # print the directories which match the path
-    # print("Directories: ", dirs)
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # Form the path
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+        print("Path: ", path)
 
-    # get a list of the files in the final directory
-    files_list = []
-    for d in dirs:
-        files_list.extend(glob.glob(os.path.join(d, "*")))
+        # find the directories which match the path
+        dirs = glob.glob(path)
 
-    # # print the files in the final directory
-    # print("Files list: ", files_list)
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            files_list = []
+            return files_list
+        
+        # # print the directories which match the path
+        # print("Directories: ", dirs)
 
-    # extract the final element following the last "/"
-    # from each file in the files_list
-    files_list = [f.split("/")[-1] for f in files_list]
+        # get a list of the files in the final directory
+        files_list = []
+        for d in dirs:
+            files_list.extend(glob.glob(os.path.join(d, "*")))
 
-    # # print the files in the final directory
-    # print("Files list final dir: ", files_list)
+        # # print the files in the final directory
+        # print("Files list: ", files_list)
+
+        # extract the final element following the last "/"
+        # from each file in the files_list
+        files_list = [f.split("/")[-1] for f in files_list]
+
+        # # print the files in the final directory
+        # print("Files list final dir: ", files_list)
+    
+    elif "/gws/nopw/j04/canari/" in base_path:
+
+        # form the path
+        path = base_path + "/" + experiment + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            print("No files available")
+            files_list = []
+            return files_list
+        
+        # get a list of the files in the final directory
+        files_list = []
+        for d in dirs:
+            files_list.extend(glob.glob(os.path.join(d, "*")))
+
+        # extract the final element following the last "/"
+        # from each file in the files_list
+        files_list = [f.split("/")[-1] for f in files_list]
+        
+    else:
+        print("Base path not recognized")
+        return None
 
     return files_list
 
