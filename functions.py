@@ -494,9 +494,9 @@ def get_years(model, base_path, experiment, table_id, variable):
             # convert the list of strings to a list of integers
             years = list(map(int, years))
 
-            print("years: ", years)
-            print("len(years): ", len(years))
-            print("type(years): ", type(years))
+            # print("years: ", years)
+            # print("len(years): ", len(years))
+            # print("type(years): ", type(years))
 
             # find the min and max years
             min_year = min(years)
@@ -684,7 +684,7 @@ def get_files(model, base_path, experiment, table_id, variable):
     if "badc/cmip6/data/CMIP6/" in base_path:
         # Form the path
         path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
-        print("Path: ", path)
+        # print("Path: ", path)
 
         # find the directories which match the path
         dirs = glob.glob(path)
@@ -715,22 +715,20 @@ def get_files(model, base_path, experiment, table_id, variable):
     
     elif "/gws/nopw/j04/canari/" in base_path:
 
-        # print the inputs to the function
-        print("Model: ", model)
-        print("Experiment: ", experiment)
-        print("Table_id: ", table_id)
-        print("Variable: ", variable)
+        # # print the inputs to the function
+        # print("Model: ", model)
+        # print("Experiment: ", experiment)
+        # print("Table_id: ", table_id)
+        # print("Variable: ", variable)
 
         # form the path
         path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
-
-        print("Path: ", path)
 
         # find the directories which match the path
         dirs = glob.glob(path)
 
         # print the directories which match the path
-        print("Directories: ", dirs)
+        # print("Directories: ", dirs)
 
         # Check that the list of directories is not empty
         if len(dirs) == 0:
@@ -741,10 +739,10 @@ def get_files(model, base_path, experiment, table_id, variable):
         # get a list of the files in the final directory
         files_list = []
         for d in dirs:
-            print("d: ", d)
+            # print("d: ", d)
             files_list =[d.split("/")[-1] for d in dirs]
 
-        print("Files list: ", files_list)
+        # print("Files list: ", files_list)
 
         # # extract the final element following the last "/"
         # # from each file in the files_list
