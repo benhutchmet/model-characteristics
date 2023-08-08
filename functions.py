@@ -754,6 +754,65 @@ def get_files(model, base_path, experiment, table_id, variable):
 
     return files_list
 
+# Define a new function which will count how many empty files there are
+# in the final directory
+def get_empty_files(model, base_path, experiment, table_id, variable):
+
+    # if the data is available on JASMIN
+    if "badc/cmip6/data/CMIP6/" in base_path:
+        # Form the path
+        path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            #print("No files available")
+            return None
+
+        # check how many files are empty in the final directory
+        empty_files = 0
+        for directory in dirs:
+            files = os.listdir(directory)
+            for file in files:
+                file_path = os.path.join(directory, file)
+                if os.path.isfile(file_path) and os.path.getsize(file_path) == 0:
+                    empty_files += 1
+    
+        print("Number of empty files: ", empty_files)
+
+    elif "/gws/nopw/j04/canari/" in base_path:
+
+        # form the path
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+
+        # find the directories which match the path
+        dirs = glob.glob(path)
+
+        # Check that the list of directories is not empty
+        if len(dirs) == 0:
+            #print("No files available")
+            return None
+        
+        # check how many files are empty in the final directory
+        empty_files = 0
+        for directory in dirs:
+            files = os.listdir(directory)
+            for file in files:
+                file_path = os.path.join(directory, file)
+                if os.path.isfile(file_path) and os.path.getsize(file_path) == 0:
+                    empty_files += 1
+
+        print("Number of empty files: ", empty_files)
+
+    else:
+        print("Base path not recognized")
+        return None
+
+    return empty_files
+        
+
 # Define a function to fill in the dataframe
 def fill_dataframe(base_paths, models, variables, columns, experiments, table_ids):
     # create an empty dataframe with the desired columns
