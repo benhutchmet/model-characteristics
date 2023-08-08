@@ -488,13 +488,23 @@ def get_years(model, base_path, experiment, table_id, variable):
                     if len(year_str) == 2:
                         years.extend([year_str[0][:4], year_str[1][:4]])
 
+            # flatten the list of year strings
+            years = [year for sublist in years for year in sublist]
+            
+            # convert the list of strings to a list of integers
+            years = list(map(int, years))
+
+            print("years: ", years)
+            print("len(years): ", len(years))
+            print("type(years): ", type(years))
+
             # find the min and max years
             min_year = min(years)
             max_year = max(years)
 
             # form the range of years
             # e.g 1850-2014
-            years_range = min_year + "-" + max_year
+            years_range = str(min_year) + "-" + str(max_year)
         else:
             print("Experiment not recognized")
             return None
