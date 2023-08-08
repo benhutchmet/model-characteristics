@@ -437,22 +437,17 @@ def get_years(model, base_path, experiment, table_id, variable):
                 print("No files available")
                 return None
             
-            # extract the min and max years from the path
-            # if the paths are /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1960-r1i1p1f1/Amon/rsds/gn/files/d* and /badc/cmip6/data/CMIP6/DCPP/NCC/NorCPM1/dcppA-hindcast/s1970-r1i1p1f1/Amon/rsds/gn/files/d*
-            # then the min and max years are 1960 and 1970
-            # first extract the s????-r*i*p*f* directory from the path
-            # which is the fifth from last element
-            # e.g. s1960-r1i1p1f1
-            years_init_dirs = [dirs.split("/")[-7] for dirs in dirs]
+            # extract the min and max years from the directory paths
+            years_init_dirs = [d.split("/")[-7] for d in dirs]
             # print("years_init_dirs: ", years_init_dirs)
 
             # extract the min and max years from the years_init_dirs
             # as the substring between the characters 's' and 'r'
-            years = [years_init_dirs.split("s")[1].split("r")[0] for years_init_dirs in years_init_dirs]
+            years = [yid.split("s")[1].split("r")[0] for yid in years_init_dirs]
             # ensure that each element in the years list is an integer
             # currently 1960-
             # get rid of the -
-            years = [years.split("-")[0] for years in years] 
+            years = [y.split("-")[0] for y in years] 
             # print("years: ", years)
 
             # find the min and max years
@@ -473,8 +468,18 @@ def get_years(model, base_path, experiment, table_id, variable):
                 return years_range
             # extract the years from the filenames
             # these will be in the format: psl_Amon_BCC-CSM2-MR_historical_r1i1p1f1_gn_185001-201412.nc
-            min_year = re.findall(r'\d{4}', files_list[0])[0]
-            max_year = re.findall(r'\d{4}', files_list[0])[1]
+            years = []
+            for file in files_list:
+                year_str = re.findall(r'\d{4}', file)
+                if len(year_str) == 2:
+                    years.append(year_str)
+
+            # flatten the list of years
+            years = [year for sublist in years for year in sublist]
+
+            # find the min and max years
+            min_year = min(years)
+            max_year = max(years)
 
             # form the range of years
             # e.g 1850-2014
@@ -505,10 +510,16 @@ def get_years(model, base_path, experiment, table_id, variable):
         # then take the 7th element
         split_final_dirs = [fd.split("_")[6] for fd in final_dirs]
 
-        # this will give dates in the format 185001-201412.nc
         # extract the min and max years from the split_final_dirs
-        min_year = re.findall(r'\d{4}', split_final_dirs[0])[0]
-        max_year = re.findall(r'\d{4}', split_final_dirs[0])[1]
+        years = []
+        for fd in split_final_dirs:
+            year_str = re.findall(r'\d{4}', fd)
+            if len(year_str) == 2:
+                years.extend(year_str)
+
+        # find the min and max years
+        min_year = min(years)
+        max_year = max(years)
 
         # form the range of years
         # e.g 1850-2014
