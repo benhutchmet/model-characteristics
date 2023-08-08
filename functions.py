@@ -764,7 +764,7 @@ def get_empty_files(model, base_path, experiment, table_id, variable):
         path = base_path + "/*/" + model + "/" + experiment + "/*r*i*p*f*/" + table_id + "/" + variable + "/" + "g?" + "/" + "files" + "/" + "d*" + "/"
 
         # find the directories which match the path
-        dirs = glob.glob(path)
+        dirs = [d for d in glob.glob(path) if os.path.isdir(d)]
 
         # Check that the list of directories is not empty
         if len(dirs) == 0:
@@ -785,10 +785,10 @@ def get_empty_files(model, base_path, experiment, table_id, variable):
     elif "/gws/nopw/j04/canari/" in base_path:
 
         # form the path
-        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/" + variable + "_" + table_id + "*r*i*p*f*"
+        path = base_path + "/" + experiment + "/" + "data/" + variable + "/" + model + "/"
 
         # find the directories which match the path
-        dirs = glob.glob(path)
+        dirs = [d for d in glob.glob(path) if os.path.isdir(d)]
 
         # Check that the list of directories is not empty
         if len(dirs) == 0:
