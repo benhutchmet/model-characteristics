@@ -9,7 +9,7 @@ models = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR", "CanESM5", "CMCC-CM2-SR5", "HadGEM3-G
 
 historical_models = [ "BCC-CSM2-MR", "MPI-ESM1-2-HR", "CanESM5", "CMCC-CM2-SR5", "HadGEM3-GC31-MM", "EC-Earth3", "MPI-ESM1-2-LR", "FGOALS-f3-L", "MIROC6", "IPSL-CM6A-LR", "NorCPM1" ]
 
-variables = [ "psl", "tas", "tos", "rsds", "sfcWind" ]
+variables = [ "psl", "tas", "tos", "rsds", "sfcWind", "ua", "va" ]
 
 # data on JASMIN path
 # /badc/cmip6/data/CMIP6/CMIP/NCC/NorCPM1/historical/r1i1p1f1/Amon/psl/gn/files/d20190914
